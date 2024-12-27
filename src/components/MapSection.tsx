@@ -14,8 +14,8 @@ const mapContainerStyle = {
 };
 
 const defaultCenter = {
-  lat: 33.5731,
-  lng: -7.5898,
+  lat: 31.7917,
+  lng: -7.0926,
 };
 
 const typeColors = {
@@ -93,7 +93,6 @@ export const MapSection = () => {
         toast.error("Erreur lors du partage");
       });
     } else {
-      // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
       navigator.clipboard.writeText(`${window.location.origin}/property/${property.id}`);
       toast.success("Lien copié dans le presse-papier");
     }
@@ -133,10 +132,11 @@ export const MapSection = () => {
                 onClick={() => setSelectedProperty(property)}
                 icon={{
                   url: `data:image/svg+xml,${encodeURIComponent(`
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${typeColors[property.type]}" width="32" height="32">
-                      <circle cx="12" cy="12" r="12"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${typeColors[property.type]}" width="24" height="24">
+                      <circle cx="12" cy="12" r="8"/>
                     </svg>
                   `)}`,
+                  scaledSize: new window.google.maps.Size(24, 24),
                 }}
               />
             ))}
@@ -157,7 +157,6 @@ export const MapSection = () => {
             )}
           </GoogleMap>
 
-          {/* Légende */}
           <div className="absolute bottom-4 left-4 bg-white p-4 rounded-lg shadow-lg">
             <h3 className="font-semibold mb-2">Types de Biens</h3>
             <div className="space-y-2">
@@ -178,7 +177,6 @@ export const MapSection = () => {
           </div>
         </div>
 
-        {/* Résultats de recherche */}
         <div className="mt-6">
           <p className="text-sm text-gray-500 mb-4">
             {filteredProperties.length} bien(s) trouvé(s)

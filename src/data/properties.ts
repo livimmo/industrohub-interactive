@@ -84,8 +84,15 @@ export const SAMPLE_PROPERTIES: Property[] = [
 
 // Fonction utilitaire pour générer des coordonnées aléatoires au Maroc
 export const generateRandomMarocCoordinates = () => {
-  const lat = 31.7917 + (Math.random() - 0.5) * 8; // Centre approximatif du Maroc
-  const lng = -7.0926 + (Math.random() - 0.5) * 8;
+  // Limites approximatives du Maroc
+  const minLat = 27.6666; // Sud
+  const maxLat = 35.9222; // Nord
+  const minLng = -13.1683; // Ouest
+  const maxLng = -1.0083; // Est
+  
+  const lat = minLat + Math.random() * (maxLat - minLat);
+  const lng = minLng + Math.random() * (maxLng - minLng);
+  
   return { lat, lng };
 };
 
@@ -107,3 +114,5 @@ for (let i = 7; i < 30; i++) {
     coordinates
   });
 }
+
+export default SAMPLE_PROPERTIES;
