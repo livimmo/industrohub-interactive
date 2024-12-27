@@ -1,4 +1,4 @@
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, MapPin } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
@@ -6,6 +6,7 @@ import { Label } from "../ui/label";
 import { Slider } from "../ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Filters } from "./types";
+import { toast } from "sonner";
 
 interface SearchFiltersProps {
   searchQuery: string;
@@ -14,6 +15,7 @@ interface SearchFiltersProps {
   setFilters: (filters: Filters) => void;
   isFilterOpen: boolean;
   setIsFilterOpen: (isOpen: boolean) => void;
+  onGeolocate: (lat: number, lng: number) => void;
 }
 
 export const SearchFilters = ({
@@ -23,7 +25,26 @@ export const SearchFilters = ({
   setFilters,
   isFilterOpen,
   setIsFilterOpen,
+  onGeolocate,
 }: SearchFiltersProps) => {
+  const handleGeolocate = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          onGeolocate(latitude, longitude);
+          toast.success("Localisation réussie");
+        },
+        (error) => {
+          console.error("Erreur de géolocalisation:", error);
+          toast.error("Erreur lors de la géolocalisation");
+        }
+      );
+    } else {
+      toast.error("La géolocalisation n'est pas supportée par votre navigateur");
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-6">
       <div className="relative flex-1">
@@ -46,6 +67,15 @@ export const SearchFilters = ({
           </Button>
         )}
       </div>
+
+      <Button
+        variant="outline"
+        className="gap-2"
+        onClick={handleGeolocate}
+      >
+        <MapPin className="w-4 h-4" />
+        Me localiser
+      </Button>
       
       <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
         <SheetTrigger asChild>
@@ -59,6 +89,24 @@ export const SearchFilters = ({
             <SheetTitle>Filtres Avancés</SheetTitle>
           </SheetHeader>
           <div className="mt-6 space-y-6">
+            <div className="space-y-4">
+              <Label>Ville</Label>
+              <Input
+                placeholder="Entrez une ville"
+                value={filters.city}
+                onChange={(e) => setFilters({ ...filters, city: e.target.value })}
+              />
+            </div>
+
+            <div className="space-y-4">
+              <Label>Localisation</Label>
+              <Input
+                placeholder="Entrez une localisation précise"
+                value={filters.location}
+                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
+              />
+            </div>
+
             <div className="space-y-4">
               <Label>Prix (MAD)</Label>
               <Slider

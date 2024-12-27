@@ -15,6 +15,8 @@ interface PropertyPopupProps {
   property: Property;
 }
 
+type SharePlatform = "facebook" | "whatsapp" | "email" | "instagram" | "clipboard";
+
 export const PropertyPopup = ({ property }: PropertyPopupProps) => {
   const propertyUrl = `${window.location.origin}/property/${property.id}`;
 
@@ -25,14 +27,14 @@ export const PropertyPopup = ({ property }: PropertyPopupProps) => {
     instagram: `https://www.instagram.com/share?url=${encodeURIComponent(propertyUrl)}`,
   };
 
-  const handleShare = (platform: keyof typeof shareOptions) => {
+  const handleShare = (platform: SharePlatform) => {
     if (platform === 'clipboard') {
       navigator.clipboard.writeText(propertyUrl);
       toast.success("Lien copié dans le presse-papier");
       return;
     }
 
-    window.open(shareOptions[platform], '_blank', 'width=600,height=400');
+    window.open(shareOptions[platform as keyof typeof shareOptions], '_blank', 'width=600,height=400');
     toast.success(`Partage sur ${platform} ouvert`);
   };
 
@@ -75,7 +77,7 @@ export const PropertyPopup = ({ property }: PropertyPopupProps) => {
             <DropdownMenuItem onClick={() => handleShare('email')}>
               Partager par email
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleShare('clipboard')}>
+            <DropdownMenuItem onClick={() => handleShare('clipboard' as SharePlatform)}>
               Copier le lien
             </DropdownMenuItem>
           </DropdownMenuContent>

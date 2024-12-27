@@ -46,10 +46,13 @@ export const MapSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [mapCenter, setMapCenter] = useState(defaultCenter);
   const [filters, setFilters] = useState<Filters>({
     priceRange: [0, 10000000],
     sizeRange: [0, 10000],
     type: "all",
+    city: "",
+    location: "",
   });
 
   const { isLoaded } = useLoadScript({
@@ -68,8 +71,19 @@ export const MapSection = () => {
     
     const matchesType = filters.type === "all" || property.type === filters.type;
 
-    return matchesSearch && matchesPrice && matchesSize && matchesType;
+    const matchesCity = !filters.city || 
+      property.location.toLowerCase().includes(filters.city.toLowerCase());
+
+    const matchesLocation = !filters.location || 
+      property.location.toLowerCase().includes(filters.location.toLowerCase());
+
+    return matchesSearch && matchesPrice && matchesSize && matchesType && 
+           matchesCity && matchesLocation;
   });
+
+  const handleGeolocate = (lat: number, lng: number) => {
+    setMapCenter({ lat, lng });
+  };
 
   const options = useMemo(() => ({
     disableDefaultUI: false,
@@ -116,13 +130,14 @@ export const MapSection = () => {
           setFilters={setFilters}
           isFilterOpen={isFilterOpen}
           setIsFilterOpen={setIsFilterOpen}
+          onGeolocate={handleGeolocate}
         />
 
         <div className="relative h-[600px] rounded-xl overflow-hidden shadow-xl">
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             zoom={7}
-            center={defaultCenter}
+            center={mapCenter}
             options={options}
           >
             {filteredProperties.map((property) => (
@@ -149,10 +164,7 @@ export const MapSection = () => {
                 }}
                 onCloseClick={() => setSelectedProperty(null)}
               >
-                <PropertyPopup 
-                  property={selectedProperty}
-                  onShare={() => handleShare(selectedProperty)}
-                />
+                <PropertyPopup property={selectedProperty} />
               </InfoWindowF>
             )}
           </GoogleMap>
