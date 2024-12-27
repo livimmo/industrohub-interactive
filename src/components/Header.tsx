@@ -4,9 +4,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Logo } from "./Logo";
 import { AuthDialog } from "./auth/AuthDialog";
+import { UserMenu } from "./user-menu";
 
 export const Header = () => {
   const isMobile = useIsMobile();
+  const isLoggedIn = false; // TODO: Replace with actual auth state
+  const userRole = "investor"; // TODO: Replace with actual user role
+  const userName = "John Doe"; // TODO: Replace with actual user name
 
   const menuItems = [
     { label: "Accueil", href: "/" },
@@ -26,7 +30,11 @@ export const Header = () => {
           {item.label}
         </a>
       ))}
-      <AuthDialog />
+      {!isLoggedIn ? (
+        <AuthDialog />
+      ) : (
+        <UserMenu userRole={userRole} userName={userName} />
+      )}
     </nav>
   );
 
@@ -51,7 +59,11 @@ export const Header = () => {
               {item.label}
             </a>
           ))}
-          <AuthDialog />
+          {!isLoggedIn ? (
+            <AuthDialog />
+          ) : (
+            <UserMenu userRole={userRole} userName={userName} />
+          )}
         </nav>
       </SheetContent>
     </Sheet>
