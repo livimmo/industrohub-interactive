@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Logo } from "./Logo";
+import { AuthDialog } from "./auth/AuthDialog";
 
 export const Header = () => {
   const isMobile = useIsMobile();
@@ -25,7 +26,7 @@ export const Header = () => {
           {item.label}
         </a>
       ))}
-      <Button>Connexion</Button>
+      <AuthDialog />
     </nav>
   );
 
@@ -50,7 +51,7 @@ export const Header = () => {
               {item.label}
             </a>
           ))}
-          <Button className="w-full">Connexion</Button>
+          <AuthDialog />
         </nav>
       </SheetContent>
     </Sheet>
