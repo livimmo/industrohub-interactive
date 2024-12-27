@@ -11,7 +11,7 @@ export const SearchBar = () => {
       <div className="relative flex items-center">
         <Input
           type="text"
-          placeholder="Search properties..."
+          placeholder="Rechercher des biens..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full h-12 pl-12 pr-4 text-lg bg-white/80 backdrop-blur-sm border-gray-200 rounded-full shadow-lg focus:ring-2 focus:ring-gray-200 transition-all duration-300"
@@ -20,7 +20,7 @@ export const SearchBar = () => {
         <Button
           className="absolute right-2 rounded-full px-6 bg-gray-900 hover:bg-gray-800 text-white transition-all duration-300"
         >
-          Search
+          Rechercher
         </Button>
       </div>
     </div>
