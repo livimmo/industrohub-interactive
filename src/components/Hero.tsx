@@ -13,10 +13,10 @@ export const Hero = () => {
       </div>
       <div className="relative z-10 container mx-auto px-4 text-center">
         <h1 className="font-display text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
-          Trouvez Votre Espace Industriel Idéal
+          Trouvez Votre Espace Industriel Idéal au Maroc
         </h1>
         <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto animate-fade-in">
-          Découvrez des biens industriels et commerciaux premium adaptés aux besoins de votre entreprise
+          Découvrez des biens industriels et commerciaux premium adaptés aux besoins de votre entreprise à travers le Royaume
         </p>
         <div className="animate-fade-in-up">
           <SearchBar />

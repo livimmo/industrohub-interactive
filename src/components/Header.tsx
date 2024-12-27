@@ -1,13 +1,8 @@
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Logo } from "./Logo";
 
 export const Header = () => {
   const isMobile = useIsMobile();
@@ -65,7 +60,7 @@ export const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container flex h-16 items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          <span className="font-display text-xl font-bold">Indupros</span>
+          <Logo />
         </a>
         {renderDesktopMenu()}
         {renderMobileMenu()}

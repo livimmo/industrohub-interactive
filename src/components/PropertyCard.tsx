@@ -34,7 +34,7 @@ export const PropertyCard = ({
         <h3 className="font-display text-xl font-semibold truncate">{title}</h3>
         <p className="text-sm text-gray-500">{location}</p>
         <div className="flex items-center justify-between pt-2">
-          <p className="font-semibold text-lg">{price.toLocaleString()} €</p>
+          <p className="font-semibold text-lg">{price.toLocaleString()} MAD</p>
           <p className="text-sm text-gray-500">{size} m²</p>
         </div>
       </div>
