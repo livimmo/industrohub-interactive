@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 type PropertyCardProps = Property;
+type SharePlatform = "facebook" | "whatsapp" | "email" | "instagram" | "clipboard";
 
 export const PropertyCard = ({
   id,
@@ -29,14 +30,14 @@ export const PropertyCard = ({
 
   const propertyUrl = `${window.location.origin}/property/${id}`;
 
-  const shareOptions = {
+  const shareOptions: Record<Exclude<SharePlatform, "clipboard">, string> = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(propertyUrl)}`,
     whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${propertyUrl}`)}`,
     email: `mailto:?subject=${encodeURIComponent(`Découvrez ce bien sur Indupros : ${title}`)}&body=${encodeURIComponent(`Découvrez ce bien immobilier : ${propertyUrl}`)}`,
     instagram: `https://www.instagram.com/share?url=${encodeURIComponent(propertyUrl)}`,
   };
 
-  const handleShare = (platform: keyof typeof shareOptions) => {
+  const handleShare = (platform: SharePlatform) => {
     if (platform === 'clipboard') {
       navigator.clipboard.writeText(propertyUrl);
       toast.success("Lien copié dans le presse-papier");
