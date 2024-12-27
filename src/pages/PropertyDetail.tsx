@@ -11,9 +11,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RequestDocumentsDialog } from "@/components/modals/RequestDocumentsDialog";
 import { BookVisitDialog } from "@/components/modals/BookVisitDialog";
+import { DocumentsList } from "@/components/documents/DocumentsList";
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -89,46 +89,19 @@ const PropertyDetail = () => {
             </div>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Documents disponibles</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-4">
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="mr-2" />
-                  Note de renseignement
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="mr-2" />
-                  Plan cadastral
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="mr-2" />
-                  Plan de contenance
-                </Button>
-              </div>
-              <div className="space-y-4 pt-4 border-t">
-                <Button 
-                  className="w-full group relative overflow-hidden"
-                  onClick={() => setShowRequestDocs(true)}
-                >
-                  <span className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors" />
-                  <FileText className="mr-2" />
-                  Demander d'autres documents
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  className="w-full group relative overflow-hidden"
-                  onClick={() => setShowBookVisit(true)}
-                >
-                  <span className="absolute inset-0 bg-secondary/10 group-hover:bg-secondary/20 transition-colors" />
-                  <Calendar className="mr-2" />
-                  Réserver une visite
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="space-y-4">
+            <DocumentsList onRequestMore={() => setShowRequestDocs(true)} />
+            
+            <Button 
+              variant="secondary" 
+              className="w-full group relative overflow-hidden"
+              onClick={() => setShowBookVisit(true)}
+            >
+              <span className="absolute inset-0 bg-secondary/10 group-hover:bg-secondary/20 transition-colors" />
+              <Calendar className="mr-2" />
+              Réserver une visite
+            </Button>
+          </div>
         </div>
 
         {isLoaded && (
