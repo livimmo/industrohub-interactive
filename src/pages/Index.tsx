@@ -3,6 +3,7 @@ import { FeaturedProperties } from "@/components/FeaturedProperties";
 import { ContactButtons } from "@/components/ContactButtons";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MapSection } from "@/components/MapSection";
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <Hero />
+        <MapSection />
         <FeaturedProperties />
         <ContactButtons />
       </main>
