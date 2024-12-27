@@ -6,7 +6,23 @@ import { Property } from "@/types/property";
 import { Card } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, X } from "lucide-react";
+import { Slider } from "./ui/slider";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
+import { Label } from "./ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 // Composant pour l'infobulle personnalisée
 const createCustomPopup = (property: Property) => {
@@ -24,32 +40,58 @@ const createCustomPopup = (property: Property) => {
   return el;
 };
 
+interface Filters {
+  priceRange: [number, number];
+  sizeRange: [number, number];
+  type: string;
+}
+
 export const MapSection = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<Filters>({
+    priceRange: [0, 10000000],
+    sizeRange: [0, 10000],
+    type: "all",
+  });
+
+  // Fonction pour filtrer les propriétés
+  const filteredProperties = SAMPLE_PROPERTIES.filter((property) => {
+    const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesPrice = property.price >= filters.priceRange[0] && 
+      property.price <= filters.priceRange[1];
+    
+    const matchesSize = property.size >= filters.sizeRange[0] && 
+      property.size <= filters.sizeRange[1];
+    
+    const matchesType = filters.type === "all" || property.type === filters.type;
+
+    return matchesSearch && matchesPrice && matchesSize && matchesType;
+  });
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Initialisation de la carte
     mapboxgl.accessToken = "pk.eyJ1IjoibG92YWJsZSIsImEiOiJjbHNxOXBtYmowMGRqMmpxdDZ5ZWV2OW5nIn0.qHvQhxzr7MrYxqXkuQB9EA";
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/light-v11",
-      center: [-7.5898, 33.5731], // Centré sur Casablanca
+      center: [-7.5898, 33.5731],
       zoom: 7,
       pitch: 45,
     });
 
-    // Ajout des contrôles de navigation
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
     // Chargement des marqueurs
     map.current.on("load", () => {
-      SAMPLE_PROPERTIES.forEach((property) => {
+      filteredProperties.forEach((property) => {
         const popup = new mapboxgl.Popup({
           offset: 25,
           closeButton: false,
@@ -63,15 +105,16 @@ export const MapSection = () => {
           .setPopup(popup)
           .addTo(map.current!);
 
-        // Événements de survol
         marker.getElement().addEventListener("mouseenter", () => {
           popup.addTo(map.current!);
+          setSelectedProperty(property);
         });
 
         marker.getElement().addEventListener("mouseleave", () => {
           setTimeout(() => {
             if (!popup.isOpen()) {
               popup.remove();
+              setSelectedProperty(null);
             }
           }, 300);
         });
@@ -81,9 +124,8 @@ export const MapSection = () => {
     return () => {
       map.current?.remove();
     };
-  }, []);
+  }, [filteredProperties]);
 
-  // Fonction utilitaire pour obtenir la couleur du marqueur selon le type
   const getMarkerColor = (type: Property["type"]) => {
     switch (type) {
       case "factory":
@@ -107,7 +149,7 @@ export const MapSection = () => {
         </h2>
         
         {/* Barre de recherche et filtres */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">
             <Input
               type="text"
@@ -117,11 +159,79 @@ export const MapSection = () => {
               className="pl-10"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2"
+                onClick={() => setSearchQuery("")}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
           </div>
-          <Button variant="outline" className="gap-2">
-            <Filter className="w-4 h-4" />
-            Filtres
-          </Button>
+          
+          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <Filter className="w-4 h-4" />
+                Filtres
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="w-full md:max-w-md">
+              <SheetHeader>
+                <SheetTitle>Filtres Avancés</SheetTitle>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                <div className="space-y-4">
+                  <Label>Prix (MAD)</Label>
+                  <Slider
+                    defaultValue={[filters.priceRange[0], filters.priceRange[1]]}
+                    max={10000000}
+                    step={100000}
+                    onValueChange={(value) => setFilters({ ...filters, priceRange: value as [number, number] })}
+                  />
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>{filters.priceRange[0].toLocaleString()} MAD</span>
+                    <span>{filters.priceRange[1].toLocaleString()} MAD</span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label>Superficie (m²)</Label>
+                  <Slider
+                    defaultValue={[filters.sizeRange[0], filters.sizeRange[1]]}
+                    max={10000}
+                    step={100}
+                    onValueChange={(value) => setFilters({ ...filters, sizeRange: value as [number, number] })}
+                  />
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>{filters.sizeRange[0]} m²</span>
+                    <span>{filters.sizeRange[1]} m²</span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label>Type de bien</Label>
+                  <Select
+                    value={filters.type}
+                    onValueChange={(value) => setFilters({ ...filters, type: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner un type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tous les types</SelectItem>
+                      <SelectItem value="factory">Usine</SelectItem>
+                      <SelectItem value="office">Bureau</SelectItem>
+                      <SelectItem value="hotel">Hôtel</SelectItem>
+                      <SelectItem value="land">Terrain</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
 
         {/* Conteneur de la carte */}
@@ -138,6 +248,13 @@ export const MapSection = () => {
             </p>
           </Card>
         )}
+
+        {/* Résultats de recherche */}
+        <div className="mt-6">
+          <p className="text-sm text-gray-500 mb-4">
+            {filteredProperties.length} bien(s) trouvé(s)
+          </p>
+        </div>
       </div>
     </section>
   );
