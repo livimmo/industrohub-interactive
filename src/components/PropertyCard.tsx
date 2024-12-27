@@ -6,6 +6,12 @@ import { Link } from "react-router-dom";
 import { Property } from "@/types/property";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type PropertyCardProps = Property;
 
@@ -21,19 +27,24 @@ export const PropertyCard = ({
 }: PropertyCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title,
-        text: `Découvrez ${title} sur Indupros`,
-        url: `${window.location.origin}/property/${id}`,
-      }).catch(() => {
-        toast.error("Erreur lors du partage");
-      });
-    } else {
-      navigator.clipboard.writeText(`${window.location.origin}/property/${id}`);
+  const propertyUrl = `${window.location.origin}/property/${id}`;
+
+  const shareOptions = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(propertyUrl)}`,
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${propertyUrl}`)}`,
+    email: `mailto:?subject=${encodeURIComponent(`Découvrez ce bien sur Indupros : ${title}`)}&body=${encodeURIComponent(`Découvrez ce bien immobilier : ${propertyUrl}`)}`,
+    instagram: `https://www.instagram.com/share?url=${encodeURIComponent(propertyUrl)}`,
+  };
+
+  const handleShare = (platform: keyof typeof shareOptions) => {
+    if (platform === 'clipboard') {
+      navigator.clipboard.writeText(propertyUrl);
       toast.success("Lien copié dans le presse-papier");
+      return;
     }
+
+    window.open(shareOptions[platform], '_blank', 'width=600,height=400');
+    toast.success(`Partage sur ${platform} ouvert`);
   };
 
   const toggleFavorite = () => {
@@ -75,9 +86,30 @@ export const PropertyCard = ({
           >
             <Heart className="h-4 w-4" fill={isFavorite ? "currentColor" : "none"} />
           </Button>
-          <Button variant="outline" size="icon" onClick={handleShare}>
-            <Share2 className="h-4 w-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Share2 className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => handleShare('facebook')}>
+                Partager sur Facebook
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleShare('whatsapp')}>
+                Partager sur WhatsApp
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleShare('instagram')}>
+                Partager sur Instagram
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleShare('email')}>
+                Partager par email
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleShare('clipboard')}>
+                Copier le lien
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </Card>
