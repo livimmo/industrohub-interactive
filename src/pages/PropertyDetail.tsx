@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Share2, MapPin, FileText, Calendar } from "lucide-react";
 import { SAMPLE_PROPERTIES } from "@/data/properties";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -12,10 +12,14 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RequestDocumentsDialog } from "@/components/modals/RequestDocumentsDialog";
+import { BookVisitDialog } from "@/components/modals/BookVisitDialog";
 
 const PropertyDetail = () => {
   const { id } = useParams();
   const property = SAMPLE_PROPERTIES.find((p) => p.id === Number(id));
+  const [showRequestDocs, setShowRequestDocs] = useState(false);
+  const [showBookVisit, setShowBookVisit] = useState(false);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBpyx3FTnDuj6a2XEKerIKFt87wxQYRov8",
@@ -26,7 +30,6 @@ const PropertyDetail = () => {
     [property]
   );
 
-  // Images supplémentaires pour la galerie (simulation)
   const additionalImages = [
     property?.imageUrl,
     "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80",
@@ -40,7 +43,6 @@ const PropertyDetail = () => {
   return (
     <div className="container py-8">
       <div className="grid grid-cols-1 gap-8">
-        {/* Galerie d'images */}
         <Carousel className="w-full">
           <CarouselContent>
             {additionalImages.map((image, index) => (
@@ -87,7 +89,6 @@ const PropertyDetail = () => {
             </div>
           </div>
 
-          {/* Section des documents */}
           <Card>
             <CardHeader>
               <CardTitle>Documents disponibles</CardTitle>
@@ -108,11 +109,20 @@ const PropertyDetail = () => {
                 </Button>
               </div>
               <div className="space-y-4 pt-4 border-t">
-                <Button className="w-full">
+                <Button 
+                  className="w-full group relative overflow-hidden"
+                  onClick={() => setShowRequestDocs(true)}
+                >
+                  <span className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors" />
                   <FileText className="mr-2" />
                   Demander d'autres documents
                 </Button>
-                <Button variant="secondary" className="w-full">
+                <Button 
+                  variant="secondary" 
+                  className="w-full group relative overflow-hidden"
+                  onClick={() => setShowBookVisit(true)}
+                >
+                  <span className="absolute inset-0 bg-secondary/10 group-hover:bg-secondary/20 transition-colors" />
                   <Calendar className="mr-2" />
                   Réserver une visite
                 </Button>
@@ -133,6 +143,15 @@ const PropertyDetail = () => {
           </div>
         )}
       </div>
+
+      <RequestDocumentsDialog
+        open={showRequestDocs}
+        onOpenChange={setShowRequestDocs}
+      />
+      <BookVisitDialog 
+        open={showBookVisit} 
+        onOpenChange={setShowBookVisit} 
+      />
     </div>
   );
 };
