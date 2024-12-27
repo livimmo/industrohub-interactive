@@ -28,6 +28,8 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Inscription réussie");
       onSuccess();
+      // Rafraîchir la page après une inscription réussie
+      window.location.reload();
     } catch (error) {
       toast.error("Erreur lors de l'inscription");
     } finally {

@@ -21,6 +21,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Connexion réussie");
       onSuccess();
+      // Rafraîchir la page après une connexion réussie
+      window.location.reload();
     } catch (error) {
       toast.error("Erreur lors de la connexion");
     } finally {
