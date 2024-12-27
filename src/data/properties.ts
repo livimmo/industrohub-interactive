@@ -56,7 +56,6 @@ export const SAMPLE_PROPERTIES: Property[] = [
     description: "Clinique moderne équipée des dernières technologies médicales.",
     coordinates: { lat: 30.4278, lng: -9.5981 }
   },
-  // ... Ajout de 25 autres propriétés avec des coordonnées aléatoires au Maroc
   {
     id: 6,
     title: "Usine Textile Fès",
@@ -67,31 +66,48 @@ export const SAMPLE_PROPERTIES: Property[] = [
     imageUrl: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&q=80",
     description: "Usine moderne dédiée à l'industrie textile.",
     coordinates: { lat: 34.0331, lng: -5.0033 }
-  },
-  // ... Continuer avec les autres propriétés jusqu'à 30
-  {
-    id: 30,
-    title: "Centre Commercial Tétouan",
-    price: 8500000,
-    size: 15000,
-    type: "office",
-    location: "Centre-ville Tétouan",
-    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
-    description: "Centre commercial moderne au cœur de Tétouan.",
-    coordinates: { lat: 35.5889, lng: -5.3626 }
   }
 ];
 
 // Fonction utilitaire pour générer des coordonnées aléatoires au Maroc
 export const generateRandomMarocCoordinates = () => {
-  // Limites approximatives du Maroc
-  const minLat = 27.6666; // Sud
-  const maxLat = 35.9222; // Nord
-  const minLng = -13.1683; // Ouest
-  const maxLng = -1.0083; // Est
+  // Limites plus précises du Maroc continental
+  const minLat = 27.6666; // Sud (frontière Mauritanie)
+  const maxLat = 35.9222; // Nord (Tanger)
+  const minLng = -13.1683; // Ouest (côte Atlantique)
+  const maxLng = -1.0083; // Est (frontière Algérie)
   
-  const lat = minLat + Math.random() * (maxLat - minLat);
-  const lng = minLng + Math.random() * (maxLng - minLng);
+  // Fonction pour vérifier si un point est dans une zone maritime
+  const isInSea = (lat: number, lng: number) => {
+    // Coordonnées approximatives de la côte marocaine
+    const coastLine = [
+      { lat: 35.9, lng: -5.5 }, // Tanger
+      { lat: 34.0, lng: -6.8 }, // Rabat
+      { lat: 33.6, lng: -7.6 }, // Casablanca
+      { lat: 32.3, lng: -9.2 }, // El Jadida
+      { lat: 30.4, lng: -9.6 }, // Agadir
+      { lat: 28.5, lng: -11.3 }, // Sud
+    ];
+    
+    // Vérifie si le point est à l'ouest de la côte (dans l'océan)
+    for (let i = 0; i < coastLine.length - 1; i++) {
+      const point1 = coastLine[i];
+      const point2 = coastLine[i + 1];
+      
+      if (lat >= point2.lat && lat <= point1.lat) {
+        const slope = (point2.lng - point1.lng) / (point2.lat - point1.lat);
+        const coastLng = point1.lng + slope * (lat - point1.lat);
+        if (lng < coastLng) return true;
+      }
+    }
+    return false;
+  };
+  
+  let lat, lng;
+  do {
+    lat = minLat + Math.random() * (maxLat - minLat);
+    lng = minLng + Math.random() * (maxLng - minLng);
+  } while (isInSea(lat, lng));
   
   return { lat, lng };
 };
