@@ -5,7 +5,7 @@ import { Eye, Heart, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Property } from "@/types/property";
 
-interface PropertyCardProps extends Property {}
+type PropertyCardProps = Property;
 
 export const PropertyCard = ({
   id,
@@ -15,6 +15,8 @@ export const PropertyCard = ({
   type,
   location,
   imageUrl,
+  description,
+  coordinates,
 }: PropertyCardProps) => {
   return (
     <Card className="group overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">

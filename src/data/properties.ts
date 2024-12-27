@@ -3,13 +3,13 @@ import { Property } from "@/types/property";
 export const SAMPLE_PROPERTIES: Property[] = [
   {
     id: 1,
-    title: "Usine Moderne Casablanca",
+    title: "Centre Logistique Moderne Casablanca",
     price: 2850000,
     size: 8500,
     type: "factory",
     location: "Zone Industrielle Ain Sebaa",
     imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80",
-    description: "Grande usine moderne située dans la zone industrielle d'Ain Sebaa. Équipée des dernières technologies et parfaitement adaptée pour la production industrielle.",
+    description: "Centre logistique moderne situé dans la zone industrielle d'Ain Sebaa. Équipé des dernières technologies.",
     coordinates: { lat: 33.5731, lng: -7.5898 }
   },
   {
