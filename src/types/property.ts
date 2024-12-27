@@ -1,4 +1,4 @@
-export type PropertyType = "factory" | "office" | "hotel" | "land";
+export type PropertyType = "factory" | "office" | "hotel" | "land" | "clinic";
 
 export interface Property {
   id: number;
