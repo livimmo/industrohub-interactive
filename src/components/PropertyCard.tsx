@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Eye, Heart, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Property } from "@/types/property";
+import { useState } from "react";
+import { toast } from "sonner";
 
 type PropertyCardProps = Property;
 
@@ -16,8 +18,29 @@ export const PropertyCard = ({
   location,
   imageUrl,
   description,
-  coordinates,
 }: PropertyCardProps) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title,
+        text: `Découvrez ${title} sur Indupros`,
+        url: `${window.location.origin}/property/${id}`,
+      }).catch(() => {
+        toast.error("Erreur lors du partage");
+      });
+    } else {
+      navigator.clipboard.writeText(`${window.location.origin}/property/${id}`);
+      toast.success("Lien copié dans le presse-papier");
+    }
+  };
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    toast.success(isFavorite ? "Retiré des favoris" : "Ajouté aux favoris");
+  };
+
   return (
     <Card className="group overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -44,10 +67,15 @@ export const PropertyCard = ({
               Voir le bien
             </Button>
           </Link>
-          <Button variant="outline" size="icon">
-            <Heart className="h-4 w-4" />
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={toggleFavorite}
+            className={isFavorite ? "text-red-500 hover:text-red-600" : ""}
+          >
+            <Heart className="h-4 w-4" fill={isFavorite ? "currentColor" : "none"} />
           </Button>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" onClick={handleShare}>
             <Share2 className="h-4 w-4" />
           </Button>
         </div>

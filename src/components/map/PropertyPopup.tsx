@@ -1,14 +1,15 @@
 import { Property } from "@/types/property";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
-import { Eye } from "lucide-react";
+import { Eye, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface PropertyPopupProps {
   property: Property;
+  onShare: () => void;
 }
 
-export const PropertyPopup = ({ property }: PropertyPopupProps) => {
+export const PropertyPopup = ({ property, onShare }: PropertyPopupProps) => {
   return (
     <Card className="w-[300px] p-4">
       <img 
@@ -22,12 +23,17 @@ export const PropertyPopup = ({ property }: PropertyPopupProps) => {
         <span className="font-medium">{property.price.toLocaleString()} MAD</span>
         <span>{property.size} m²</span>
       </div>
-      <Link to={`/property/${property.id}`}>
-        <Button className="w-full gap-2">
-          <Eye className="w-4 h-4" />
-          Voir le bien
+      <div className="flex gap-2">
+        <Link to={`/property/${property.id}`} className="flex-1">
+          <Button className="w-full gap-2">
+            <Eye className="w-4 h-4" />
+            Voir le bien
+          </Button>
+        </Link>
+        <Button variant="outline" size="icon" onClick={onShare}>
+          <Share2 className="w-4 h-4" />
         </Button>
-      </Link>
+      </div>
     </Card>
   );
 };

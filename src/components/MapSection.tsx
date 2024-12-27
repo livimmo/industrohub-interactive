@@ -2,11 +2,11 @@ import { useState, useMemo } from "react";
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
 import { SAMPLE_PROPERTIES } from "@/data/properties";
 import { Property } from "@/types/property";
-import { Card } from "./ui/card";
 import { SearchFilters } from "./map/SearchFilters";
-import { PropertyMarkerIcon } from "./map/PropertyMarker";
 import { PropertyPopup } from "./map/PropertyPopup";
 import { Filters } from "./map/types";
+import { Factory, Building2, Hotel, Hospital, LandPlot } from "lucide-react";
+import { toast } from "sonner";
 
 const mapContainerStyle = {
   width: "100%",
@@ -16,6 +16,30 @@ const mapContainerStyle = {
 const defaultCenter = {
   lat: 33.5731,
   lng: -7.5898,
+};
+
+const typeColors = {
+  factory: "#FF4B4B",
+  office: "#4B70FF",
+  hotel: "#FFB74B",
+  clinic: "#4BFF4B",
+  land: "#8B4513",
+};
+
+const typeIcons = {
+  factory: Factory,
+  office: Building2,
+  hotel: Hotel,
+  clinic: Hospital,
+  land: LandPlot,
+};
+
+const typeLabels = {
+  factory: "Usine",
+  office: "Bureau",
+  hotel: "Hôtel",
+  clinic: "Clinique",
+  land: "Terrain",
 };
 
 export const MapSection = () => {
@@ -32,7 +56,6 @@ export const MapSection = () => {
     googleMapsApiKey: "AIzaSyBpyx3FTnDuj6a2XEKerIKFt87wxQYRov8",
   });
 
-  // Fonction pour filtrer les propriétés
   const filteredProperties = SAMPLE_PROPERTIES.filter((property) => {
     const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       property.location.toLowerCase().includes(searchQuery.toLowerCase());
@@ -59,6 +82,22 @@ export const MapSection = () => {
       },
     ],
   }), []);
+
+  const handleShare = (property: Property) => {
+    if (navigator.share) {
+      navigator.share({
+        title: property.title,
+        text: `Découvrez ${property.title} sur Indupros`,
+        url: `${window.location.origin}/property/${property.id}`,
+      }).catch(() => {
+        toast.error("Erreur lors du partage");
+      });
+    } else {
+      // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
+      navigator.clipboard.writeText(`${window.location.origin}/property/${property.id}`);
+      toast.success("Lien copié dans le presse-papier");
+    }
+  };
 
   if (!isLoaded) {
     return <div>Chargement de la carte...</div>;
@@ -94,14 +133,7 @@ export const MapSection = () => {
                 onClick={() => setSelectedProperty(property)}
                 icon={{
                   url: `data:image/svg+xml,${encodeURIComponent(`
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${
-                      property.type === "factory" ? "#FF4B4B" :
-                      property.type === "office" ? "#4B70FF" :
-                      property.type === "hotel" ? "#FFB74B" :
-                      property.type === "clinic" ? "#4BFF4B" :
-                      property.type === "land" ? "#8B4513" :
-                      "#666666"
-                    }" width="32" height="32">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${typeColors[property.type]}" width="32" height="32">
                       <circle cx="12" cy="12" r="12"/>
                     </svg>
                   `)}`,
@@ -117,10 +149,33 @@ export const MapSection = () => {
                 }}
                 onCloseClick={() => setSelectedProperty(null)}
               >
-                <PropertyPopup property={selectedProperty} />
+                <PropertyPopup 
+                  property={selectedProperty}
+                  onShare={() => handleShare(selectedProperty)}
+                />
               </InfoWindowF>
             )}
           </GoogleMap>
+
+          {/* Légende */}
+          <div className="absolute bottom-4 left-4 bg-white p-4 rounded-lg shadow-lg">
+            <h3 className="font-semibold mb-2">Types de Biens</h3>
+            <div className="space-y-2">
+              {Object.entries(typeLabels).map(([type, label]) => {
+                const Icon = typeIcons[type as keyof typeof typeIcons];
+                return (
+                  <div key={type} className="flex items-center gap-2">
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: typeColors[type as keyof typeof typeColors] }}
+                    />
+                    <Icon className="w-4 h-4" />
+                    <span className="text-sm">{label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Résultats de recherche */}
