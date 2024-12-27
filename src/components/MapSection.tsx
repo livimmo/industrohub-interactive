@@ -24,7 +24,7 @@ export const MapSection = () => {
   const center = useMemo(() => ({ lat: 33.5731, lng: -7.5898 }), []); // Centré sur Casablanca
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY", // À remplacer par votre clé API Google Maps
+    googleMapsApiKey: "AIzaSyBpyx3FTnDuj6a2XEKerIKFt87wxQYRov8",
   });
 
   if (!isLoaded) {
