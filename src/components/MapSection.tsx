@@ -1,26 +1,25 @@
 import { useLoadScript, GoogleMap, MarkerF } from "@react-google-maps/api";
 import { useState, useMemo } from "react";
+import { SAMPLE_PROPERTIES } from "@/data/properties";
+import { Property } from "@/types/property";
 
-const properties = [
-  {
-    id: 1,
-    position: { lat: 33.5731, lng: -7.5898 }, // Casablanca
-    title: "Entrepôt Moderne",
-    price: 2500000,
-    size: 500,
-  },
-  {
-    id: 2,
-    position: { lat: 34.0209, lng: -6.8416 }, // Rabat
-    title: "Local Commercial",
-    price: 1800000,
-    size: 300,
-  },
-];
+const getIconUrl = (type: Property["type"]) => {
+  switch (type) {
+    case "factory":
+      return "/icons/factory.png";
+    case "office":
+      return "/icons/office.png";
+    case "hotel":
+      return "/icons/hotel.png";
+    case "land":
+      return "/icons/land.png";
+    default:
+      return "/icons/default.png";
+  }
+};
 
 export const MapSection = () => {
-  const [selectedProperty, setSelectedProperty] = useState<null | typeof properties[0]>(null);
-
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const center = useMemo(() => ({ lat: 33.5731, lng: -7.5898 }), []); // Centré sur Casablanca
 
   const { isLoaded } = useLoadScript({
@@ -49,11 +48,15 @@ export const MapSection = () => {
               fullscreenControl: true,
             }}
           >
-            {properties.map((property) => (
+            {SAMPLE_PROPERTIES.map((property) => (
               <MarkerF
                 key={property.id}
-                position={property.position}
+                position={property.coordinates}
                 onClick={() => setSelectedProperty(property)}
+                icon={{
+                  url: getIconUrl(property.type),
+                  scaledSize: new window.google.maps.Size(32, 32),
+                }}
               />
             ))}
           </GoogleMap>
