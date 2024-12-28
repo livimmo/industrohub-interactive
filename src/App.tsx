@@ -8,6 +8,7 @@ import Contact from "@/pages/Contact";
 import Properties from "@/pages/Properties";
 import PropertyDetail from "@/pages/PropertyDetail";
 import Profile from "@/pages/Profile";
+import DeveloperSales from "@/pages/DeveloperSales";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/properties" element={<Properties />} />
             <Route path="/properties/:id" element={<PropertyDetail />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/developer-sales" element={<DeveloperSales />} />
           </Routes>
         </main>
         <Footer />
