@@ -57,105 +57,128 @@ const DeveloperSales = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Ventes Promoteur</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Découvrez nos projets immobiliers commerciaux et industriels
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="relative overflow-hidden bg-primary/5 py-24">
+        <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-10"></div>
+        <div className="container relative mx-auto px-4">
+          <div className="text-center">
+            <h1 className="font-display text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              Ventes Promoteur
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
+              Découvrez nos projets immobiliers commerciaux et industriels d'exception
+            </p>
+          </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {DEVELOPERS.map((developer) => (
-            <div
-              key={developer.id}
-              className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center"
-            >
-              <img
-                src={developer.logo}
-                alt={developer.name}
-                className="w-32 h-32 object-contain mb-4"
-              />
-              <h3 className="text-xl font-semibold mb-2">{developer.name}</h3>
-              <p className="text-gray-600">{developer.description}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mb-8">
-          <AdvancedFilters 
-            filters={{
-              city: filters.city,
-              location: filters.location,
-              propertyType: filters.propertyType,
-              minPrice: filters.minPrice,
-              maxPrice: filters.maxPrice,
-              listingType: filters.listingType,
-              minSize: filters.minSize,
-              maxSize: filters.maxSize,
-            }} 
-            setFilters={(newFilters) => {
-              setFilters(prev => ({
-                ...prev,
-                ...newFilters,
-                listingType: "sale",
-              }));
-            }}
-          />
-        </div>
-
-        <div className="flex justify-end gap-2 mb-4">
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("grid")}
-          >
-            <Grid className="w-4 h-4 mr-2" />
-            Grille
-          </Button>
-          <Button
-            variant={viewMode === "map" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("map")}
-          >
-            <Map className="w-4 h-4 mr-2" />
-            Carte
-          </Button>
-        </div>
-
-        {viewMode === "grid" ? (
-          <div className="space-y-16">
-            {projectsByDeveloper.map((developer) => (
-              <div key={developer.id} className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-center gap-4 mb-6">
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Nos Partenaires Promoteurs</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {DEVELOPERS.map((developer) => (
+              <div
+                key={developer.id}
+                className="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg transition-all hover:shadow-xl"
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
+                <div className="relative">
                   <img
                     src={developer.logo}
                     alt={developer.name}
-                    className="w-16 h-16 object-contain"
+                    className="mx-auto h-32 w-32 object-contain mb-6"
                   />
-                  <div>
-                    <h2 className="text-2xl font-semibold">{developer.name}</h2>
-                    <Badge variant="secondary">
-                      {developer.projects.length} projet{developer.projects.length > 1 ? "s" : ""}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {developer.projects.map((property) => (
-                    <PropertyCard key={property.id} {...property} />
-                  ))}
+                  <h3 className="text-2xl font-semibold text-center mb-3">{developer.name}</h3>
+                  <p className="text-gray-600 text-center">{developer.description}</p>
                 </div>
               </div>
             ))}
           </div>
-        ) : (
-          <div className="bg-white rounded-lg p-6 shadow-sm">
-            <MapSection />
+        </div>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="mb-12">
+            <AdvancedFilters 
+              filters={{
+                city: filters.city,
+                location: filters.location,
+                propertyType: filters.propertyType,
+                minPrice: filters.minPrice,
+                maxPrice: filters.maxPrice,
+                listingType: filters.listingType,
+                minSize: filters.minSize,
+                maxSize: filters.maxSize,
+              }} 
+              setFilters={(newFilters) => {
+                setFilters(prev => ({
+                  ...prev,
+                  ...newFilters,
+                  listingType: "sale",
+                }));
+              }}
+            />
           </div>
-        )}
-      </div>
+
+          <div className="flex justify-end gap-2 mb-8">
+            <Button
+              variant={viewMode === "grid" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className="shadow-sm"
+            >
+              <Grid className="w-4 h-4 mr-2" />
+              Grille
+            </Button>
+            <Button
+              variant={viewMode === "map" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("map")}
+              className="shadow-sm"
+            >
+              <Map className="w-4 h-4 mr-2" />
+              Carte
+            </Button>
+          </div>
+
+          {viewMode === "grid" ? (
+            <div className="space-y-24">
+              {projectsByDeveloper.map((developer) => (
+                <div key={developer.id} className="bg-white rounded-2xl p-8 shadow-lg">
+                  <div className="flex items-center gap-6 mb-8 border-b pb-6">
+                    <img
+                      src={developer.logo}
+                      alt={developer.name}
+                      className="w-20 h-20 object-contain"
+                    />
+                    <div>
+                      <h2 className="text-3xl font-display font-bold">{developer.name}</h2>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="secondary" className="text-sm">
+                          {developer.projects.length} projet{developer.projects.length > 1 ? "s" : ""}
+                        </Badge>
+                        <span className="text-gray-500">•</span>
+                        <span className="text-gray-500">{developer.description}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {developer.projects.map((property) => (
+                      <PropertyCard key={property.id} {...property} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl p-8 shadow-lg">
+              <MapSection />
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 };
