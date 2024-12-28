@@ -75,7 +75,7 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
                   <SelectValue placeholder="Sélectionner une ville" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Toutes les villes</SelectItem>
+                  <SelectItem value="all">Toutes les villes</SelectItem>
                   {moroccanCities.map((city) => (
                     <SelectItem key={city} value={city.toLowerCase()}>{city}</SelectItem>
                   ))}
@@ -103,7 +103,7 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
                   <SelectValue placeholder="Sélectionner un type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Tous les types</SelectItem>
+                  <SelectItem value="all">Tous les types</SelectItem>
                   <SelectItem value="industrial">Industriel</SelectItem>
                   <SelectItem value="commercial">Commercial</SelectItem>
                   <SelectItem value="office">Bureau</SelectItem>
@@ -140,9 +140,9 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
               variant="outline"
               onClick={() => {
                 setFilters({
-                  city: "",
+                  city: "all",
                   location: "",
-                  propertyType: "",
+                  propertyType: "all",
                   minPrice: 0,
                   maxPrice: 10000000,
                 });
