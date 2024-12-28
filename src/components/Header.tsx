@@ -8,9 +8,9 @@ import { UserMenu } from "./user-menu";
 
 export const Header = () => {
   const isMobile = useIsMobile();
-  const isLoggedIn = false; // TODO: Replace with actual auth state
-  const userRole = "investor"; // TODO: Replace with actual user role
-  const userName = "John Doe"; // TODO: Replace with actual user name
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userRole = localStorage.getItem('userRole') || "investor";
+  const userName = localStorage.getItem('userName') || "John Doe";
 
   const menuItems = [
     { label: "Accueil", href: "/" },

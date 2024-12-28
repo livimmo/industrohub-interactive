@@ -79,7 +79,7 @@ export const PromoSlider = () => {
         <CarouselPrevious className="left-4" />
         <CarouselNext className="right-4" />
       </Carousel>
-      <AuthDialog open={showAuthDialog} onOpenChange={setShowAuthDialog} />
+      {showAuthDialog && <AuthDialog />}
     </>
   );
 };
