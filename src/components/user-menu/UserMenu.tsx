@@ -7,7 +7,6 @@ import {
   Home,
   LogOut,
   Settings,
-  User,
 } from "lucide-react";
 import {
   Sidebar,
@@ -17,6 +16,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarProvider,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "./UserAvatar";
@@ -80,45 +80,49 @@ export const UserMenu = ({ userRole, userName, userImage }: UserMenuProps) => {
   ];
 
   return (
-    <Sidebar>
-      <SidebarHeader className="p-4">
-        <div className="flex items-center gap-3">
-          <UserAvatar name={userName} image={userImage} />
-          <div className="flex flex-col">
-            <span className="font-medium">{userName}</span>
-            <span className="text-xs text-muted-foreground capitalize">
-              {userRole === "owner" ? "Propriétaire" : "Investisseur"}
-            </span>
-          </div>
-        </div>
-      </SidebarHeader>
-      <Separator />
-      <SidebarContent>
-        <SidebarMenu>
-          {menuItems
-            .filter((item) => item.roles.includes(userRole))
-            .map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild>
-                  <a href={item.href} className="flex items-center gap-3">
-                    <item.icon className="h-4 w-4" />
-                    <span>{item.label}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter>
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-3"
-          onClick={handleLogout}
-        >
-          <LogOut className="h-4 w-4" />
-          Se déconnecter
-        </Button>
-      </SidebarFooter>
-    </Sidebar>
+    <SidebarProvider>
+      <div className="flex w-full">
+        <Sidebar>
+          <SidebarHeader className="p-4">
+            <div className="flex items-center gap-3">
+              <UserAvatar name={userName} image={userImage} />
+              <div className="flex flex-col">
+                <span className="font-medium">{userName}</span>
+                <span className="text-xs text-muted-foreground capitalize">
+                  {userRole === "owner" ? "Propriétaire" : "Investisseur"}
+                </span>
+              </div>
+            </div>
+          </SidebarHeader>
+          <Separator />
+          <SidebarContent>
+            <SidebarMenu>
+              {menuItems
+                .filter((item) => item.roles.includes(userRole))
+                .map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.href} className="flex items-center gap-3">
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.label}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+            </SidebarMenu>
+          </SidebarContent>
+          <SidebarFooter>
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4" />
+              Se déconnecter
+            </Button>
+          </SidebarFooter>
+        </Sidebar>
+      </div>
+    </SidebarProvider>
   );
 };
