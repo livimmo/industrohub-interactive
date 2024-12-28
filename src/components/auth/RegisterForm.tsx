@@ -18,20 +18,31 @@ interface RegisterFormProps {
 
 export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string>('investor');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // TODO: Implement actual registration logic
+      const formData = new FormData(e.currentTarget);
+      const firstName = formData.get('firstName') as string;
+      const lastName = formData.get('lastName') as string;
+      const email = formData.get('email') as string;
+      
+      // Stocker les informations d'inscription
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userName', `${firstName} ${lastName}`);
+      localStorage.setItem('userRole', selectedRole);
+      localStorage.setItem('userEmail', email);
+
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Inscription réussie");
       onSuccess();
-      // Rafraîchir la page après une inscription réussie
       window.location.reload();
     } catch (error) {
       toast.error("Erreur lors de l'inscription");
+      localStorage.clear(); // En cas d'erreur, on nettoie le localStorage
     } finally {
       setIsLoading(false);
     }
@@ -42,24 +53,28 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="firstName">Prénom</Label>
-          <Input id="firstName" required />
+          <Input id="firstName" name="firstName" required />
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastName">Nom</Label>
-          <Input id="lastName" required />
+          <Input id="lastName" name="lastName" required />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" placeholder="exemple@email.com" required />
+        <Input id="email" name="email" type="email" placeholder="exemple@email.com" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Mot de passe</Label>
-        <Input id="password" type="password" required />
+        <Input id="password" name="password" type="password" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="accountType">Type de compte</Label>
-        <Select required>
+        <Select 
+          value={selectedRole}
+          onValueChange={setSelectedRole}
+          required
+        >
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un type" />
           </SelectTrigger>

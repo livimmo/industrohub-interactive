@@ -17,14 +17,24 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     setIsLoading(true);
 
     try {
-      // TODO: Implement actual login logic
+      // Simuler une connexion réussie
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get('email') as string;
+      const userName = email.split('@')[0]; // Utiliser la partie avant @ comme nom d'utilisateur
+
+      // Stocker les informations de connexion
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('userRole', 'investor'); // Par défaut, on met investor
+      localStorage.setItem('userEmail', email);
+
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("Connexion réussie");
       onSuccess();
-      // Rafraîchir la page après une connexion réussie
       window.location.reload();
     } catch (error) {
       toast.error("Erreur lors de la connexion");
+      localStorage.clear(); // En cas d'erreur, on nettoie le localStorage
     } finally {
       setIsLoading(false);
     }
@@ -34,11 +44,11 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
     <form onSubmit={handleSubmit} className="space-y-4 py-4">
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" placeholder="exemple@email.com" required />
+        <Input id="email" name="email" type="email" placeholder="exemple@email.com" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Mot de passe</Label>
-        <Input id="password" type="password" required />
+        <Input id="password" name="password" type="password" required />
       </div>
       <Button
         type="submit"
