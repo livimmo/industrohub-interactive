@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Slider } from "@/components/ui/slider";
 import { Filter, Search } from "lucide-react";
 import { toast } from "sonner";
+import { NEIGHBORHOODS } from "@/data/neighborhoods";
 
 interface AdvancedFiltersProps {
   filters: {
@@ -45,8 +46,11 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
 
   const handleSearch = () => {
     toast.success("Recherche lancée");
-    // Ici vous pouvez ajouter la logique de recherche
   };
+
+  const availableNeighborhoods = filters.city && filters.city !== "all" 
+    ? NEIGHBORHOODS[filters.city.toLowerCase()] || []
+    : [];
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-sm border">
@@ -69,7 +73,13 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
               <Label>Ville</Label>
               <Select
                 value={filters.city}
-                onValueChange={(value) => setFilters({ ...filters, city: value })}
+                onValueChange={(value) => {
+                  setFilters({ 
+                    ...filters, 
+                    city: value,
+                    location: "all" // Reset location when city changes
+                  });
+                }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Sélectionner une ville" />
@@ -84,13 +94,24 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
             </div>
 
             <div className="space-y-4">
-              <Label>Localisation</Label>
-              <Input
-                placeholder="Quartier, zone..."
+              <Label>Quartier</Label>
+              <Select
                 value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                className="w-full"
-              />
+                onValueChange={(value) => setFilters({ ...filters, location: value })}
+                disabled={!filters.city || filters.city === "all"}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un quartier" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les quartiers</SelectItem>
+                  {availableNeighborhoods.map((neighborhood) => (
+                    <SelectItem key={neighborhood} value={neighborhood.toLowerCase()}>
+                      {neighborhood}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-4">
@@ -141,7 +162,7 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
               onClick={() => {
                 setFilters({
                   city: "all",
-                  location: "",
+                  location: "all",
                   propertyType: "all",
                   minPrice: 0,
                   maxPrice: 10000000,
