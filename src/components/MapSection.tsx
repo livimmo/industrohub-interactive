@@ -47,12 +47,20 @@ const typeLabels = {
   retail: "Commerce",
 };
 
+type Filters = {
+  priceRange: [number, number];
+  sizeRange: [number, number];
+  type: string;
+  zoning: string;
+  city: string;
+};
+
 export const MapSection = () => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const [filters, setFilters] = useState({
-    priceRange: [0, 10000000] as [number, number],
-    sizeRange: [0, 10000] as [number, number],
+  const [filters, setFilters] = useState<Filters>({
+    priceRange: [0, 10000000],
+    sizeRange: [0, 10000],
     type: "all",
     zoning: "all",
     city: "",
@@ -103,7 +111,23 @@ export const MapSection = () => {
         </h2>
         
         <div className="mb-6">
-          <AdvancedFilters filters={filters} setFilters={setFilters} />
+          <AdvancedFilters 
+            filters={{
+              city: filters.city,
+              location: "",
+              propertyType: filters.type,
+              minPrice: filters.priceRange[0],
+              maxPrice: filters.priceRange[1]
+            }} 
+            setFilters={(newFilters) => {
+              setFilters(prev => ({
+                ...prev,
+                city: newFilters.city,
+                type: newFilters.propertyType,
+                priceRange: [newFilters.minPrice, newFilters.maxPrice]
+              }));
+            }}
+          />
         </div>
 
         <div className="relative h-[600px] rounded-xl overflow-hidden shadow-xl">
