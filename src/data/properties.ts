@@ -1,130 +1,132 @@
-export const SAMPLE_PROPERTIES = [
+import { Property } from "@/types/property";
+
+export const SAMPLE_PROPERTIES: Property[] = [
   {
     id: 1,
-    title: "Hôtel Moderne à Casablanca",
-    price: 15000000,
-    size: 2500,
-    type: "hotel" as const,
-    zoning: "i2",
-    location: "Casablanca - Ain Diab",
-    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-    description: "Hôtel moderne avec vue sur l'océan",
+    title: "Entrepôt Moderne Lissasfa",
+    description: "Grand entrepôt moderne avec quais de chargement",
+    price: 2500000,
+    size: 1200,
+    type: "warehouse",
+    location: "Lissasfa - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.5731,
-      lng: -7.6298
+      lat: 33.5505,
+      lng: -7.6589
     },
-    listingType: "sale" as const
+    listingType: "sale",
+    developer: "Tanger Med Zones"
   },
   {
     id: 2,
-    title: "Terrain Industriel",
-    price: 8000000,
-    size: 5000,
-    type: "land" as const,
-    zoning: "i8",
-    location: "Casablanca - Sidi Bernoussi",
-    imageUrl: "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
-    description: "Grand terrain industriel viabilisé",
+    title: "Usine Ain Sebaa",
+    description: "Usine moderne avec bureaux intégrés",
+    price: 15000,
+    size: 800,
+    type: "factory",
+    location: "Ain Sebaa - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.5933,
-      lng: -7.5896
+      lat: 33.6139,
+      lng: -7.5323
     },
-    listingType: "sale" as const
+    listingType: "rent",
+    developer: "CFG Développement"
   },
   {
     id: 3,
-    title: "Entrepôt Logistique",
+    title: "Bureaux Premium Marina",
+    description: "Espace de bureaux moderne avec vue sur mer",
     price: 35000,
-    size: 1500,
-    type: "warehouse" as const,
-    zoning: "i7",
-    location: "Casablanca - Ain Sebaa",
-    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
-    description: "Entrepôt moderne avec quais de chargement",
+    size: 450,
+    type: "office",
+    location: "Marina - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.6133,
-      lng: -7.5496
+      lat: 33.6067,
+      lng: -7.6319
     },
-    listingType: "rent" as const
+    listingType: "rent",
+    developer: "MEDZ"
   },
   {
     id: 4,
-    title: "Usine Moderne",
-    price: 12000000,
-    size: 3000,
-    type: "factory" as const,
-    zoning: "i2s1",
-    location: "Casablanca - Sidi Maârouf",
-    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    description: "Usine moderne avec bureaux intégrés",
+    title: "Local Commercial Maarif",
+    description: "Local commercial bien situé",
+    price: 1800000,
+    size: 120,
+    type: "retail",
+    location: "Maarif - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.5331,
-      lng: -7.6498
+      lat: 33.5889,
+      lng: -7.6362
     },
-    listingType: "sale" as const
+    listingType: "sale",
+    developer: "Tanger Med Zones"
   },
   {
     id: 5,
-    title: "Dépôt Logistique Moderne Lissasfa",
-    price: 45000,
+    title: "Terrain Industriel Zenata",
+    description: "Terrain viabilisé en zone industrielle",
+    price: 4500000,
     size: 2000,
-    type: "warehouse" as const,
-    zoning: "i7",
-    location: "Casablanca - Lissasfa",
-    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
-    description: "Dépôt moderne avec quais de chargement et système de sécurité 24/7",
+    type: "land",
+    location: "Zenata - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.5331,
-      lng: -7.6598
+      lat: 33.6500,
+      lng: -7.5167
     },
-    listingType: "rent" as const
+    listingType: "sale",
+    developer: "CFG Développement"
   },
   {
     id: 6,
-    title: "Entrepôt Industriel Lissasfa",
-    price: 8500000,
-    size: 3500,
-    type: "warehouse" as const,
-    zoning: "i7",
-    location: "Casablanca - Lissasfa",
-    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
-    description: "Grand entrepôt industriel avec bureaux et parking sécurisé",
+    title: "Clinique Moderne Anfa",
+    description: "Clinique équipée aux normes internationales",
+    price: 45000,
+    size: 600,
+    type: "clinic",
+    location: "Anfa - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.5341,
-      lng: -7.6588
+      lat: 33.5731,
+      lng: -7.6326
     },
-    listingType: "sale" as const
+    listingType: "rent",
+    developer: "MEDZ"
   },
   {
     id: 7,
-    title: "Dépôt Logistique Bouskoura",
-    price: 55000,
-    size: 2500,
-    type: "warehouse" as const,
-    zoning: "i7",
-    location: "Casablanca - Bouskoura",
-    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
-    description: "Dépôt neuf avec accès autoroutier direct",
+    title: "Hôtel Bord de Mer",
+    description: "Hôtel 4 étoiles en bord de mer",
+    price: 8500000,
+    size: 1500,
+    type: "hotel",
+    location: "Ain Diab - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.4931,
-      lng: -7.6498
+      lat: 33.5989,
+      lng: -7.6706
     },
-    listingType: "rent" as const
+    listingType: "sale",
+    developer: "Tanger Med Zones"
   },
   {
     id: 8,
-    title: "Centre Logistique Bouskoura",
-    price: 12000000,
-    size: 4500,
-    type: "warehouse" as const,
-    zoning: "i7",
-    location: "Casablanca - Bouskoura",
-    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
-    description: "Centre logistique moderne avec dock-shelters et grande hauteur sous plafond",
+    title: "Entrepôt Logistique Nouaceur",
+    description: "Entrepôt logistique près de l'aéroport",
+    price: 25000,
+    size: 1800,
+    type: "warehouse",
+    location: "Nouaceur - Casablanca",
+    imageUrl: "/placeholder.svg",
     coordinates: {
-      lat: 33.4941,
-      lng: -7.6488
+      lat: 33.3678,
+      lng: -7.5892
     },
-    listingType: "sale" as const
+    listingType: "rent",
+    developer: "CFG Développement"
   }
 ];
