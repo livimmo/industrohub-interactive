@@ -1,10 +1,14 @@
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
-export const Footer = () => {
+interface FooterProps {
+  className?: string;
+}
+
+export const Footer = ({ className }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-50 border-t">
+    <footer className={`bg-gray-50 border-t ${className}`}>
       <div className="container py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
