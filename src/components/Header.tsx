@@ -6,6 +6,7 @@ import { Logo } from "./Logo";
 import { AuthDialog } from "./auth/AuthDialog";
 import { UserMenu } from "./user-menu";
 import { NotificationBell } from "./notifications/NotificationBell";
+import { GlobalSearch } from "./GlobalSearch";
 
 type UserRole = "investor" | "owner";
 
@@ -25,6 +26,7 @@ export const Header = () => {
 
   const renderDesktopMenu = () => (
     <nav className="hidden md:flex items-center gap-6">
+      <GlobalSearch />
       {menuItems.map((item) => (
         <a
           key={item.label}
@@ -55,6 +57,7 @@ export const Header = () => {
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
         <nav className="flex flex-col gap-4 mt-6">
+          <GlobalSearch />
           {menuItems.map((item) => (
             <a
               key={item.label}

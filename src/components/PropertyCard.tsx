@@ -30,13 +30,13 @@ export const PropertyCard = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const pricePerSqm = Math.round(price / size);
 
-  const propertyUrl = `${window.location.origin}/property/${id}`;
+  const propertyUrl = `/properties/${id}`;
 
   const shareOptions: Record<Exclude<SharePlatform, "clipboard">, string> = {
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(propertyUrl)}`,
-    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${propertyUrl}`)}`,
-    email: `mailto:?subject=${encodeURIComponent(`Découvrez ce bien sur Indupros : ${title}`)}&body=${encodeURIComponent(`Découvrez ce bien immobilier : ${propertyUrl}`)}`,
-    instagram: `https://www.instagram.com/share?url=${encodeURIComponent(propertyUrl)}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + propertyUrl)}`,
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${window.location.origin + propertyUrl}`)}`,
+    email: `mailto:?subject=${encodeURIComponent(`Découvrez ce bien sur Indupros : ${title}`)}&body=${encodeURIComponent(`Découvrez ce bien immobilier : ${window.location.origin + propertyUrl}`)}`,
+    instagram: `https://www.instagram.com/share?url=${encodeURIComponent(window.location.origin + propertyUrl)}`,
   };
 
   const handleShare = (platform: SharePlatform) => {
@@ -88,7 +88,7 @@ export const PropertyCard = ({
           <p className="text-sm text-gray-500">{size} m²</p>
         </div>
         <div className="flex gap-2 pt-2">
-          <Link to={`/property/${id}`} className="flex-1">
+          <Link to={propertyUrl} className="flex-1">
             <Button className="w-full gap-2">
               <Eye className="h-4 w-4" />
               Voir le bien
