@@ -71,7 +71,6 @@ export const Header = () => {
               {item.label}
             </a>
           ))}
-          {isLoggedIn && <NotificationBell />}
           {!isLoggedIn ? (
             <AuthDialog />
           ) : (
