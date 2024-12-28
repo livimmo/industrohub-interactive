@@ -5,6 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Logo } from "./Logo";
 import { AuthDialog } from "./auth/AuthDialog";
 import { UserMenu } from "./user-menu";
+import { NotificationBell } from "./notifications/NotificationBell";
 
 type UserRole = "investor" | "owner";
 
@@ -33,6 +34,7 @@ export const Header = () => {
           {item.label}
         </a>
       ))}
+      {isLoggedIn && <NotificationBell />}
       {!isLoggedIn ? (
         <AuthDialog />
       ) : (
@@ -62,6 +64,7 @@ export const Header = () => {
               {item.label}
             </a>
           ))}
+          {isLoggedIn && <NotificationBell />}
           {!isLoggedIn ? (
             <AuthDialog />
           ) : (
