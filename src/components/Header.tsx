@@ -6,10 +6,13 @@ import { Logo } from "./Logo";
 import { AuthDialog } from "./auth/AuthDialog";
 import { UserMenu } from "./user-menu";
 
+type UserRole = "investor" | "owner";
+
 export const Header = () => {
   const isMobile = useIsMobile();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const userRole = localStorage.getItem('userRole') || "investor";
+  const storedRole = localStorage.getItem('userRole');
+  const userRole: UserRole = (storedRole === 'owner' || storedRole === 'investor') ? storedRole : 'investor';
   const userName = localStorage.getItem('userName') || "John Doe";
 
   const menuItems = [
