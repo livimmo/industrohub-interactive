@@ -54,7 +54,7 @@ export const PropertyCard = ({
   };
 
   return (
-    <Card className="group overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">
+    <Card className="group w-full h-full overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg flex flex-col">
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
           src={imageUrl}
@@ -65,10 +65,10 @@ export const PropertyCard = ({
           {type}
         </Badge>
       </div>
-      <div className="p-4 space-y-2">
-        <h3 className="font-display text-xl font-semibold truncate">{title}</h3>
+      <div className="p-4 space-y-2 flex-1 flex flex-col">
+        <h3 className="font-display text-lg font-semibold line-clamp-2">{title}</h3>
         <p className="text-sm text-gray-500">{location}</p>
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-2 mt-auto">
           <p className="font-semibold text-lg">{price.toLocaleString()} MAD</p>
           <p className="text-sm text-gray-500">{size} m²</p>
         </div>
