@@ -13,6 +13,40 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+const FEATURED_PROJECTS = [
+  {
+    id: 1,
+    title: "Les Jardins de l'Atlas",
+    description: "Un complexe résidentiel de standing avec espaces verts",
+    image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
+  },
+  {
+    id: 2,
+    title: "Marina Business Park",
+    description: "Un centre d'affaires moderne en front de mer",
+    image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
+  },
+  {
+    id: 3,
+    title: "Eco Valley",
+    description: "Un projet écologique intégré",
+    image: "https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace",
+  },
+  {
+    id: 4,
+    title: "Les Terrasses de Bouskoura",
+    description: "Des espaces de vie premium",
+    image: "https://images.unsplash.com/photo-1486718448742-163732cd1544",
+  },
+];
 
 const DEVELOPERS = [
   {
@@ -49,7 +83,6 @@ const DeveloperSales = () => {
 
   const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
-  // Group properties by developer
   const developerProperties = SAMPLE_PROPERTIES.filter(
     (property) => property.listingType === "sale"
   );
@@ -75,6 +108,41 @@ const DeveloperSales = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      <div className="container mx-auto px-4 -mt-16 mb-16">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {FEATURED_PROJECTS.map((project) => (
+              <CarouselItem key={project.id} className="md:basis-1/2 lg:basis-1/3">
+                <div className="relative group overflow-hidden rounded-2xl">
+                  <div 
+                    className="aspect-[4/3] bg-cover bg-center transform transition-transform duration-300 group-hover:scale-110"
+                    style={{ backgroundImage: `url(${project.image})` }}
+                  >
+                    <div className="absolute inset-0 bg-black/40 transition-opacity group-hover:opacity-30" />
+                  </div>
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+                    <h3 className="text-2xl font-bold mb-2 animate-fade-in">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm opacity-90 animate-fade-in">
+                      {project.description}
+                    </p>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-4" />
+          <CarouselNext className="right-4" />
+        </Carousel>
       </div>
 
       <section className="py-16 bg-white">
@@ -106,16 +174,7 @@ const DeveloperSales = () => {
         <div className="container mx-auto px-4">
           <div className="mb-12">
             <AdvancedFilters 
-              filters={{
-                city: filters.city,
-                location: filters.location,
-                propertyType: filters.propertyType,
-                minPrice: filters.minPrice,
-                maxPrice: filters.maxPrice,
-                listingType: filters.listingType,
-                minSize: filters.minSize,
-                maxSize: filters.maxSize,
-              }} 
+              filters={filters}
               setFilters={(newFilters) => {
                 setFilters(prev => ({
                   ...prev,
