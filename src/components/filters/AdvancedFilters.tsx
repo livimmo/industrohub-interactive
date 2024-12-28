@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Slider } from "@/components/ui/slider";
-import { Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { toast } from "sonner";
-import { NEIGHBORHOODS } from "@/data/neighborhoods";
+import { ListingTypeFilter } from "./ListingTypeFilter";
+import { LocationFilter } from "./LocationFilter";
+import { PropertyTypeFilter } from "./PropertyTypeFilter";
+import { PriceFilter } from "./PriceFilter";
+import { SizeFilter } from "./SizeFilter";
 
 interface AdvancedFiltersProps {
   filters: {
@@ -17,30 +16,11 @@ interface AdvancedFiltersProps {
     minPrice: number;
     maxPrice: number;
     listingType: "sale" | "rent" | "all";
+    minSize: number;
+    maxSize: number;
   };
   setFilters: (filters: AdvancedFiltersProps['filters']) => void;
 }
-
-const moroccanCities = [
-  "Casablanca",
-  "Rabat",
-  "Marrakech",
-  "Fès",
-  "Tanger",
-  "Agadir",
-  "Meknès",
-  "Oujda",
-  "Kénitra",
-  "Tétouan",
-  "El Jadida",
-  "Safi",
-  "Mohammedia",
-  "Khouribga",
-  "Béni Mellal",
-  "Nador",
-  "Taza",
-  "Settat"
-];
 
 export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -48,10 +28,6 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
   const handleSearch = () => {
     toast.success("Recherche lancée");
   };
-
-  const availableNeighborhoods = filters.city && filters.city !== "all" 
-    ? NEIGHBORHOODS[filters.city.toLowerCase()] || []
-    : [];
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-sm border">
@@ -70,111 +46,54 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
       {isOpen && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="space-y-4">
-              <Label>Type d'annonce</Label>
-              <Select
-                value={filters.listingType}
-                onValueChange={(value) => setFilters({ ...filters, listingType: value as "sale" | "rent" | "all" })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Type d'annonce" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les types</SelectItem>
-                  <SelectItem value="sale">Vente</SelectItem>
-                  <SelectItem value="rent">Location</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <ListingTypeFilter
+              value={filters.listingType}
+              onChange={(value) => setFilters({ ...filters, listingType: value })}
+            />
 
-            <div className="space-y-4">
-              <Label>Ville</Label>
-              <Select
-                value={filters.city}
-                onValueChange={(value) => {
-                  setFilters({ 
-                    ...filters, 
-                    city: value,
-                    location: "all" // Reset location when city changes
-                  });
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner une ville" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Toutes les villes</SelectItem>
-                  {moroccanCities.map((city) => (
-                    <SelectItem key={city} value={city.toLowerCase()}>{city}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <LocationFilter
+              city={filters.city}
+              location={filters.location}
+              onCityChange={(value) => {
+                setFilters({ 
+                  ...filters, 
+                  city: value,
+                  location: "all"
+                });
+              }}
+              onLocationChange={(value) => setFilters({ ...filters, location: value })}
+            />
 
-            <div className="space-y-4">
-              <Label>Quartier</Label>
-              <Select
-                value={filters.location}
-                onValueChange={(value) => setFilters({ ...filters, location: value })}
-                disabled={!filters.city || filters.city === "all"}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner un quartier" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les quartiers</SelectItem>
-                  {availableNeighborhoods.map((neighborhood) => (
-                    <SelectItem key={neighborhood} value={neighborhood.toLowerCase()}>
-                      {neighborhood}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-4">
-              <Label>Type de bien</Label>
-              <Select
-                value={filters.propertyType}
-                onValueChange={(value) => setFilters({ ...filters, propertyType: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner un type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les types</SelectItem>
-                  <SelectItem value="industrial">Industriel</SelectItem>
-                  <SelectItem value="commercial">Commercial</SelectItem>
-                  <SelectItem value="office">Bureau</SelectItem>
-                  <SelectItem value="warehouse">Entrepôt</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <PropertyTypeFilter
+              value={filters.propertyType}
+              onChange={(value) => setFilters({ ...filters, propertyType: value })}
+            />
           </div>
 
-          <div className="space-y-4">
-            <Label>
-              {filters.listingType === "rent" ? "Loyer (MAD/mois)" : "Prix (MAD)"}
-            </Label>
-            <div className="px-3">
-              <Slider
-                defaultValue={[filters.minPrice, filters.maxPrice]}
-                max={10000000}
-                step={100000}
-                onValueChange={(value) => {
-                  setFilters({
-                    ...filters,
-                    minPrice: value[0],
-                    maxPrice: value[1],
-                  });
-                }}
-              />
-            </div>
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>{filters.minPrice.toLocaleString()} MAD{filters.listingType === "rent" && "/mois"}</span>
-              <span>{filters.maxPrice.toLocaleString()} MAD{filters.listingType === "rent" && "/mois"}</span>
-            </div>
-          </div>
+          <PriceFilter
+            minPrice={filters.minPrice}
+            maxPrice={filters.maxPrice}
+            listingType={filters.listingType}
+            onChange={(values) => {
+              setFilters({
+                ...filters,
+                minPrice: values[0],
+                maxPrice: values[1],
+              });
+            }}
+          />
+
+          <SizeFilter
+            minSize={filters.minSize}
+            maxSize={filters.maxSize}
+            onChange={(values) => {
+              setFilters({
+                ...filters,
+                minSize: values[0],
+                maxSize: values[1],
+              });
+            }}
+          />
 
           <div className="flex justify-end gap-4">
             <Button
@@ -187,6 +106,8 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
                   minPrice: 0,
                   maxPrice: 10000000,
                   listingType: "all",
+                  minSize: 0,
+                  maxSize: 10000,
                 });
                 toast.info("Filtres réinitialisés");
               }}

@@ -53,6 +53,7 @@ type Filters = {
   type: string;
   zoning: string;
   city: string;
+  listingType: "sale" | "rent" | "all";
 };
 
 export const MapSection = () => {
@@ -64,6 +65,7 @@ export const MapSection = () => {
     type: "all",
     zoning: "all",
     city: "",
+    listingType: "all",
   });
 
   const { isLoaded } = useLoadScript({
@@ -84,7 +86,10 @@ export const MapSection = () => {
     const matchesCity = !filters.city || 
       property.location.toLowerCase().includes(filters.city.toLowerCase());
 
-    return matchesPrice && matchesSize && matchesType && matchesZoning && matchesCity;
+    const matchesListingType = filters.listingType === "all" || 
+      property.listingType === filters.listingType;
+
+    return matchesPrice && matchesSize && matchesType && matchesZoning && matchesCity && matchesListingType;
   });
 
   const options = useMemo(() => ({
@@ -117,14 +122,19 @@ export const MapSection = () => {
               location: "",
               propertyType: filters.type,
               minPrice: filters.priceRange[0],
-              maxPrice: filters.priceRange[1]
+              maxPrice: filters.priceRange[1],
+              minSize: filters.sizeRange[0],
+              maxSize: filters.sizeRange[1],
+              listingType: filters.listingType,
             }} 
             setFilters={(newFilters) => {
               setFilters(prev => ({
                 ...prev,
                 city: newFilters.city,
                 type: newFilters.propertyType,
-                priceRange: [newFilters.minPrice, newFilters.maxPrice]
+                priceRange: [newFilters.minPrice, newFilters.maxPrice],
+                sizeRange: [newFilters.minSize, newFilters.maxSize],
+                listingType: newFilters.listingType,
               }));
             }}
           />
