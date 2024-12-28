@@ -6,9 +6,14 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapSection } from "@/components/MapSection";
 import { Button } from "@/components/ui/button";
-import { Grid, Map } from "lucide-react";
+import { Grid, Map, ChevronDown } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-// Mock data for developers - in real app, this would come from your backend
 const DEVELOPERS = [
   {
     id: 1,
@@ -63,7 +68,7 @@ const DeveloperSales = () => {
         <div className="container relative mx-auto px-4">
           <div className="text-center">
             <h1 className="font-display text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Ventes Promoteur
+              Programmes Neufs
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
               Découvrez nos projets immobiliers commerciaux et industriels d'exception
@@ -143,34 +148,43 @@ const DeveloperSales = () => {
           </div>
 
           {viewMode === "grid" ? (
-            <div className="space-y-24">
-              {projectsByDeveloper.map((developer) => (
-                <div key={developer.id} className="bg-white rounded-2xl p-8 shadow-lg">
-                  <div className="flex items-center gap-6 mb-8 border-b pb-6">
-                    <img
-                      src={developer.logo}
-                      alt={developer.name}
-                      className="w-20 h-20 object-contain"
-                    />
-                    <div>
-                      <h2 className="text-3xl font-display font-bold">{developer.name}</h2>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="secondary" className="text-sm">
-                          {developer.projects.length} projet{developer.projects.length > 1 ? "s" : ""}
-                        </Badge>
-                        <span className="text-gray-500">•</span>
-                        <span className="text-gray-500">{developer.description}</span>
+            <div className="space-y-8">
+              <Accordion type="single" collapsible className="space-y-6">
+                {projectsByDeveloper.map((developer) => (
+                  <AccordionItem
+                    key={developer.id}
+                    value={developer.id.toString()}
+                    className="bg-white rounded-2xl shadow-lg border-none"
+                  >
+                    <AccordionTrigger className="px-8 py-6 hover:no-underline">
+                      <div className="flex items-center gap-6">
+                        <img
+                          src={developer.logo}
+                          alt={developer.name}
+                          className="w-20 h-20 object-contain"
+                        />
+                        <div className="text-left">
+                          <h2 className="text-2xl font-display font-bold">{developer.name}</h2>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Badge variant="secondary" className="text-sm">
+                              {developer.projects.length} projet{developer.projects.length > 1 ? "s" : ""}
+                            </Badge>
+                            <span className="text-gray-500">•</span>
+                            <span className="text-gray-500">{developer.description}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {developer.projects.map((property) => (
-                      <PropertyCard key={property.id} {...property} />
-                    ))}
-                  </div>
-                </div>
-              ))}
+                    </AccordionTrigger>
+                    <AccordionContent className="px-8 pb-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-6">
+                        {developer.projects.map((property) => (
+                          <PropertyCard key={property.id} {...property} />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           ) : (
             <div className="bg-white rounded-2xl p-8 shadow-lg">
