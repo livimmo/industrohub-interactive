@@ -7,6 +7,7 @@ import { AuthDialog } from "./auth/AuthDialog";
 import { UserMenu } from "./user-menu";
 import { NotificationBell } from "./notifications/NotificationBell";
 import { GlobalSearch } from "./GlobalSearch";
+import { SidebarProvider } from "./ui/sidebar";
 
 type UserRole = "investor" | "owner";
 
@@ -41,7 +42,9 @@ export const Header = () => {
       {!isLoggedIn ? (
         <AuthDialog />
       ) : (
-        <UserMenu userRole={userRole} userName={userName} />
+        <SidebarProvider>
+          <UserMenu userRole={userRole} userName={userName} />
+        </SidebarProvider>
       )}
     </nav>
   );
@@ -72,7 +75,9 @@ export const Header = () => {
           {!isLoggedIn ? (
             <AuthDialog />
           ) : (
-            <UserMenu userRole={userRole} userName={userName} />
+            <SidebarProvider>
+              <UserMenu userRole={userRole} userName={userName} />
+            </SidebarProvider>
           )}
         </nav>
       </SheetContent>
