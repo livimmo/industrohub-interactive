@@ -20,6 +20,7 @@ export const Header = () => {
   const menuItems = [
     { label: "Accueil", href: "/" },
     { label: "Biens", href: "#properties" },
+    { label: "Programmes Neufs", href: "/developer-sales" },
     { label: "À propos", href: "#about" },
     { label: "Contact", href: "#contact" },
   ];
