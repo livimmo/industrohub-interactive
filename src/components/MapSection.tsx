@@ -2,11 +2,10 @@ import { useState, useMemo } from "react";
 import { GoogleMap, useLoadScript, MarkerF, InfoWindowF } from "@react-google-maps/api";
 import { SAMPLE_PROPERTIES } from "@/data/properties";
 import { Property } from "@/types/property";
-import { SearchFilters } from "./map/SearchFilters";
 import { PropertyPopup } from "./map/PropertyPopup";
-import { Filters } from "./map/types";
-import { Factory, Building2, Hotel, Hospital, LandPlot } from "lucide-react";
+import { Factory, Building2, Hotel, Hospital, LandPlot, Store, Warehouse } from "lucide-react";
 import { toast } from "sonner";
+import { AdvancedFilters } from "./filters/AdvancedFilters";
 
 const mapContainerStyle = {
   width: "100%",
@@ -24,6 +23,8 @@ const typeColors = {
   hotel: "#FFB74B",
   clinic: "#4BFF4B",
   land: "#8B4513",
+  warehouse: "#8B4513",
+  retail: "#FF69B4",
 };
 
 const typeIcons = {
@@ -32,6 +33,8 @@ const typeIcons = {
   hotel: Hotel,
   clinic: Hospital,
   land: LandPlot,
+  warehouse: Warehouse,
+  retail: Store,
 };
 
 const typeLabels = {
@@ -40,19 +43,19 @@ const typeLabels = {
   hotel: "Hôtel",
   clinic: "Clinique",
   land: "Terrain",
+  warehouse: "Dépôt",
+  retail: "Commerce",
 };
 
 export const MapSection = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const [filters, setFilters] = useState<Filters>({
-    priceRange: [0, 10000000],
-    sizeRange: [0, 10000],
+  const [filters, setFilters] = useState({
+    priceRange: [0, 10000000] as [number, number],
+    sizeRange: [0, 10000] as [number, number],
     type: "all",
+    zoning: "all",
     city: "",
-    location: "",
   });
 
   const { isLoaded } = useLoadScript({
@@ -60,9 +63,6 @@ export const MapSection = () => {
   });
 
   const filteredProperties = SAMPLE_PROPERTIES.filter((property) => {
-    const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchQuery.toLowerCase());
-    
     const matchesPrice = property.price >= filters.priceRange[0] && 
       property.price <= filters.priceRange[1];
     
@@ -70,20 +70,14 @@ export const MapSection = () => {
       property.size <= filters.sizeRange[1];
     
     const matchesType = filters.type === "all" || property.type === filters.type;
+    
+    const matchesZoning = filters.zoning === "all" || property.zoning === filters.zoning;
 
     const matchesCity = !filters.city || 
       property.location.toLowerCase().includes(filters.city.toLowerCase());
 
-    const matchesLocation = !filters.location || 
-      property.location.toLowerCase().includes(filters.location.toLowerCase());
-
-    return matchesSearch && matchesPrice && matchesSize && matchesType && 
-           matchesCity && matchesLocation;
+    return matchesPrice && matchesSize && matchesType && matchesZoning && matchesCity;
   });
-
-  const handleGeolocate = (lat: number, lng: number) => {
-    setMapCenter({ lat, lng });
-  };
 
   const options = useMemo(() => ({
     disableDefaultUI: false,
@@ -97,21 +91,6 @@ export const MapSection = () => {
     ],
   }), []);
 
-  const handleShare = (property: Property) => {
-    if (navigator.share) {
-      navigator.share({
-        title: property.title,
-        text: `Découvrez ${property.title} sur Indupros`,
-        url: `${window.location.origin}/property/${property.id}`,
-      }).catch(() => {
-        toast.error("Erreur lors du partage");
-      });
-    } else {
-      navigator.clipboard.writeText(`${window.location.origin}/property/${property.id}`);
-      toast.success("Lien copié dans le presse-papier");
-    }
-  };
-
   if (!isLoaded) {
     return <div>Chargement de la carte...</div>;
   }
@@ -123,15 +102,9 @@ export const MapSection = () => {
           Découvrez Nos Biens sur la Carte
         </h2>
         
-        <SearchFilters
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          filters={filters}
-          setFilters={setFilters}
-          isFilterOpen={isFilterOpen}
-          setIsFilterOpen={setIsFilterOpen}
-          onGeolocate={handleGeolocate}
-        />
+        <div className="mb-6">
+          <AdvancedFilters filters={filters} setFilters={setFilters} />
+        </div>
 
         <div className="relative h-[600px] rounded-xl overflow-hidden shadow-xl">
           <GoogleMap

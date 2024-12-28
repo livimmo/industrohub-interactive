@@ -7,6 +7,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     price: 2850000,
     size: 8500,
     type: "factory",
+    zoning: "i2s1",
     location: "Zone Industrielle Ain Sebaa",
     imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80",
     description: "Centre logistique moderne situé dans la zone industrielle d'Ain Sebaa. Équipé des dernières technologies.",
@@ -18,6 +19,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     price: 4200000,
     size: 1200,
     type: "office",
+    zoning: "i2",
     location: "Hay Riad, Rabat",
     imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
     description: "Espace de bureaux premium au cœur de Hay Riad. Vue panoramique, parking souterrain et services haut de gamme.",
@@ -114,8 +116,10 @@ export const generateRandomMarocCoordinates = () => {
 
 // Générer le reste des propriétés aléatoirement
 for (let i = 7; i < 30; i++) {
-  const types: Property["type"][] = ["factory", "office", "hotel", "clinic", "land"];
+  const types: Property["type"][] = ["factory", "office", "hotel", "land", "warehouse", "retail"];
+  const zonings: Property["zoning"][] = ["i2s1", "i2", "i8", "i7"];
   const randomType = types[Math.floor(Math.random() * types.length)];
+  const randomZoning = zonings[Math.floor(Math.random() * zonings.length)];
   const coordinates = generateRandomMarocCoordinates();
   
   SAMPLE_PROPERTIES.push({
@@ -124,6 +128,7 @@ for (let i = 7; i < 30; i++) {
     price: Math.floor(Math.random() * 9000000) + 1000000,
     size: Math.floor(Math.random() * 9000) + 1000,
     type: randomType,
+    zoning: randomZoning,
     location: "Maroc",
     imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
     description: `Description de la propriété ${i}`,
