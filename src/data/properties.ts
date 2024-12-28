@@ -62,5 +62,69 @@ export const SAMPLE_PROPERTIES = [
       lng: -7.6498
     },
     listingType: "sale"
+  },
+  {
+    id: 5,
+    title: "Dépôt Logistique Moderne Lissasfa",
+    price: 45000,
+    size: 2000,
+    type: "warehouse",
+    zoning: "i7",
+    location: "Casablanca - Lissasfa",
+    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
+    description: "Dépôt moderne avec quais de chargement et système de sécurité 24/7",
+    coordinates: {
+      lat: 33.5331,
+      lng: -7.6598
+    },
+    listingType: "rent"
+  },
+  {
+    id: 6,
+    title: "Entrepôt Industriel Lissasfa",
+    price: 8500000,
+    size: 3500,
+    type: "warehouse",
+    zoning: "i7",
+    location: "Casablanca - Lissasfa",
+    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
+    description: "Grand entrepôt industriel avec bureaux et parking sécurisé",
+    coordinates: {
+      lat: 33.5341,
+      lng: -7.6588
+    },
+    listingType: "sale"
+  },
+  {
+    id: 7,
+    title: "Dépôt Logistique Bouskoura",
+    price: 55000,
+    size: 2500,
+    type: "warehouse",
+    zoning: "i7",
+    location: "Casablanca - Bouskoura",
+    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
+    description: "Dépôt neuf avec accès autoroutier direct",
+    coordinates: {
+      lat: 33.4931,
+      lng: -7.6498
+    },
+    listingType: "rent"
+  },
+  {
+    id: 8,
+    title: "Centre Logistique Bouskoura",
+    price: 12000000,
+    size: 4500,
+    type: "warehouse",
+    zoning: "i7",
+    location: "Casablanca - Bouskoura",
+    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
+    description: "Centre logistique moderne avec dock-shelters et grande hauteur sous plafond",
+    coordinates: {
+      lat: 33.4941,
+      lng: -7.6488
+    },
+    listingType: "sale"
   }
 ];
