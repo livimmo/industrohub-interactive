@@ -50,6 +50,27 @@ const zoningLabels = {
   i7: "I7",
 };
 
+const moroccanCities = [
+  "Casablanca",
+  "Rabat",
+  "Marrakech",
+  "Fès",
+  "Tanger",
+  "Agadir",
+  "Meknès",
+  "Oujda",
+  "Kénitra",
+  "Tétouan",
+  "El Jadida",
+  "Safi",
+  "Mohammedia",
+  "Khouribga",
+  "Béni Mellal",
+  "Nador",
+  "Taza",
+  "Settat"
+];
+
 export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -77,12 +98,20 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-4">
               <Label>Ville</Label>
-              <Input
-                placeholder="Entrez une ville"
+              <Select
                 value={filters.city}
-                onChange={(e) => setFilters({ ...filters, city: e.target.value })}
-                className="w-full"
-              />
+                onValueChange={(value) => setFilters({ ...filters, city: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner une ville" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Toutes les villes</SelectItem>
+                  {moroccanCities.map((city) => (
+                    <SelectItem key={city} value={city.toLowerCase()}>{city}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-4">
