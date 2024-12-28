@@ -25,8 +25,10 @@ export const PropertyCard = ({
   location,
   imageUrl,
   description,
+  listingType,
 }: PropertyCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const pricePerSqm = Math.round(price / size);
 
   const propertyUrl = `${window.location.origin}/property/${id}`;
 
@@ -61,15 +63,28 @@ export const PropertyCard = ({
           alt={title}
           className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
         />
-        <Badge className="absolute top-4 left-4 bg-white/90 text-gray-900 backdrop-blur-sm">
-          {type}
-        </Badge>
+        <div className="absolute top-4 left-4 flex gap-2">
+          <Badge className="bg-white/90 text-gray-900 backdrop-blur-sm">
+            {type}
+          </Badge>
+          <Badge className="bg-white/90 text-gray-900 backdrop-blur-sm">
+            {listingType === "sale" ? "Vente" : "Location"}
+          </Badge>
+        </div>
       </div>
       <div className="p-4 space-y-2 flex-1 flex flex-col">
         <h3 className="font-display text-lg font-semibold line-clamp-2">{title}</h3>
         <p className="text-sm text-gray-500">{location}</p>
         <div className="flex items-center justify-between pt-2 mt-auto">
-          <p className="font-semibold text-lg">{price.toLocaleString()} MAD</p>
+          <div>
+            <p className="font-semibold text-lg">
+              {price.toLocaleString()} MAD
+              {listingType === "rent" && "/mois"}
+            </p>
+            <p className="text-sm text-gray-500">
+              {pricePerSqm} MAD/m²{listingType === "rent" && "/mois"}
+            </p>
+          </div>
           <p className="text-sm text-gray-500">{size} m²</p>
         </div>
         <div className="flex gap-2 pt-2">

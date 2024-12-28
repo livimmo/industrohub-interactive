@@ -16,6 +16,7 @@ interface AdvancedFiltersProps {
     propertyType: string;
     minPrice: number;
     maxPrice: number;
+    listingType: "sale" | "rent" | "all";
   };
   setFilters: (filters: AdvancedFiltersProps['filters']) => void;
 }
@@ -69,6 +70,23 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
       {isOpen && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-4">
+              <Label>Type d'annonce</Label>
+              <Select
+                value={filters.listingType}
+                onValueChange={(value) => setFilters({ ...filters, listingType: value as "sale" | "rent" | "all" })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Type d'annonce" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les types</SelectItem>
+                  <SelectItem value="sale">Vente</SelectItem>
+                  <SelectItem value="rent">Location</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-4">
               <Label>Ville</Label>
               <Select
@@ -135,7 +153,9 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
           </div>
 
           <div className="space-y-4">
-            <Label>Budget (MAD)</Label>
+            <Label>
+              {filters.listingType === "rent" ? "Loyer (MAD/mois)" : "Prix (MAD)"}
+            </Label>
             <div className="px-3">
               <Slider
                 defaultValue={[filters.minPrice, filters.maxPrice]}
@@ -151,8 +171,8 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
               />
             </div>
             <div className="flex justify-between text-sm text-gray-500">
-              <span>{filters.minPrice.toLocaleString()} MAD</span>
-              <span>{filters.maxPrice.toLocaleString()} MAD</span>
+              <span>{filters.minPrice.toLocaleString()} MAD{filters.listingType === "rent" && "/mois"}</span>
+              <span>{filters.maxPrice.toLocaleString()} MAD{filters.listingType === "rent" && "/mois"}</span>
             </div>
           </div>
 
@@ -166,6 +186,7 @@ export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) =
                   propertyType: "all",
                   minPrice: 0,
                   maxPrice: 10000000,
+                  listingType: "all",
                 });
                 toast.info("Filtres réinitialisés");
               }}

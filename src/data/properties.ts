@@ -11,18 +11,20 @@ export const SAMPLE_PROPERTIES: Property[] = [
     location: "Zone Industrielle Ain Sebaa",
     imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80",
     description: "Centre logistique moderne situé dans la zone industrielle d'Ain Sebaa. Équipé des dernières technologies.",
+    listingType: "sale",
     coordinates: { lat: 33.5731, lng: -7.5898 }
   },
   {
     id: 2,
     title: "Bureaux Premium Rabat",
-    price: 4200000,
+    price: 45000,
     size: 1200,
     type: "office",
     zoning: "i2",
     location: "Hay Riad, Rabat",
     imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
     description: "Espace de bureaux premium au cœur de Hay Riad. Vue panoramique, parking souterrain et services haut de gamme.",
+    listingType: "rent",
     coordinates: { lat: 34.0209, lng: -6.8416 }
   },
   {
@@ -122,20 +124,25 @@ export const generateRandomMarocCoordinates = () => {
 for (let i = 7; i < 30; i++) {
   const types: Property["type"][] = ["factory", "office", "hotel", "land", "warehouse", "retail"];
   const zonings: Property["zoning"][] = ["i2s1", "i2", "i8", "i7"];
+  const listingTypes: Property["listingType"][] = ["sale", "rent"];
   const randomType = types[Math.floor(Math.random() * types.length)];
   const randomZoning = zonings[Math.floor(Math.random() * zonings.length)];
+  const randomListingType = listingTypes[Math.floor(Math.random() * listingTypes.length)];
   const coordinates = generateRandomMarocCoordinates();
   
   SAMPLE_PROPERTIES.push({
     id: i,
     title: `Propriété ${i}`,
-    price: Math.floor(Math.random() * 9000000) + 1000000,
+    price: randomListingType === "sale" 
+      ? Math.floor(Math.random() * 9000000) + 1000000
+      : Math.floor(Math.random() * 50000) + 10000,
     size: Math.floor(Math.random() * 9000) + 1000,
     type: randomType,
     zoning: randomZoning,
     location: "Maroc",
     imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
     description: `Description de la propriété ${i}`,
+    listingType: randomListingType,
     coordinates
   });
 }
