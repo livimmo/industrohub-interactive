@@ -26,15 +26,10 @@ interface UserMenuProps {
   userRole: "owner" | "investor";
   userName: string;
   userImage?: string;
+  onLogout: () => void;
 }
 
-export const UserMenu = ({ userRole, userName, userImage }: UserMenuProps) => {
-  const handleLogout = () => {
-    localStorage.clear();
-    toast.success("Déconnexion réussie");
-    window.location.reload();
-  };
-
+export const UserMenu = ({ userRole, userName, userImage, onLogout }: UserMenuProps) => {
   const menuItems = [
     {
       icon: Home,
@@ -115,7 +110,7 @@ export const UserMenu = ({ userRole, userName, userImage }: UserMenuProps) => {
           <Button
             variant="destructive"
             className="w-full justify-start gap-3"
-            onClick={handleLogout}
+            onClick={onLogout}
           >
             <LogOut className="h-4 w-4" />
             Se déconnecter

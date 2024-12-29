@@ -9,14 +9,18 @@ import { NotificationBell } from "./notifications/NotificationBell";
 import { GlobalSearch } from "./GlobalSearch";
 import { SidebarProvider } from "./ui/sidebar";
 
-type UserRole = "investor" | "owner";
-
 export const Header = () => {
   const isMobile = useIsMobile();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const storedRole = localStorage.getItem('userRole');
-  const userRole: UserRole = (storedRole === 'owner' || storedRole === 'investor') ? storedRole : 'investor';
+  const userRole = (storedRole === 'owner' || storedRole === 'investor') ? storedRole : 'investor';
   const userName = localStorage.getItem('userName') || "John Doe";
+
+  const handleLogout = () => {
+    localStorage.clear();
+    toast.success("Déconnexion réussie");
+    window.location.reload();
+  };
 
   const menuItems = [
     { label: "Accueil", href: "/" },
@@ -43,7 +47,7 @@ export const Header = () => {
         <AuthDialog />
       ) : (
         <SidebarProvider>
-          <UserMenu userRole={userRole} userName={userName} />
+          <UserMenu userRole={userRole} userName={userName} onLogout={handleLogout} />
         </SidebarProvider>
       )}
     </nav>
@@ -75,7 +79,7 @@ export const Header = () => {
             <AuthDialog />
           ) : (
             <SidebarProvider>
-              <UserMenu userRole={userRole} userName={userName} />
+              <UserMenu userRole={userRole} userName={userName} onLogout={handleLogout} />
             </SidebarProvider>
           )}
         </nav>
