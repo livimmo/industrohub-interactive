@@ -12,14 +12,14 @@ import { useState } from "react";
 const slides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
     title: "Flash Vente ! 🔥",
     description: "Profitez de -20% sur les espaces industriels premium",
     cta: "J'en profite",
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901",
     title: "Nouveau sur Indupros ?",
     description: "Inscrivez-vous et recevez des offres exclusives",
     cta: "S'inscrire",

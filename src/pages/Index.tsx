@@ -3,6 +3,7 @@ import { FeaturedProperties } from "@/components/FeaturedProperties";
 import { ContactButtons } from "@/components/ContactButtons";
 import { MapSection } from "@/components/MapSection";
 import { PromoSlider } from "@/components/PromoSlider";
+import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { Button } from "@/components/ui/button";
 import { Building2 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -10,6 +11,7 @@ import { Link } from "react-router-dom";
 const Index = () => {
   return (
     <>
+      <AnnouncementBanner />
       <Hero />
       <PromoSlider />
       <div className="bg-primary/5 py-16">

@@ -6,7 +6,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed"
         style={{
-          backgroundImage: "url('/lovable-uploads/397310e3-d5ef-420f-81b6-5f2fd7f9fa75.png')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab')",
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 to-gray-900/40 backdrop-blur-[2px]" />
