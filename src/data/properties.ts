@@ -9,7 +9,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 1200,
     type: "warehouse",
     location: "Lissasfa - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
     coordinates: {
       lat: 33.5505,
       lng: -7.6589
@@ -25,7 +25,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 800,
     type: "factory",
     location: "Ain Sebaa - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
     coordinates: {
       lat: 33.6139,
       lng: -7.5323
@@ -41,7 +41,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 450,
     type: "office",
     location: "Marina - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c",
     coordinates: {
       lat: 33.6067,
       lng: -7.6319
@@ -57,7 +57,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 120,
     type: "retail",
     location: "Maarif - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1441986300917-64674bd600d8",
     coordinates: {
       lat: 33.5889,
       lng: -7.6362
@@ -73,7 +73,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 2000,
     type: "land",
     location: "Zenata - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1513880989635-6eb491ce7f5b",
     coordinates: {
       lat: 33.6500,
       lng: -7.5167
@@ -89,7 +89,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 600,
     type: "clinic",
     location: "Anfa - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d",
     coordinates: {
       lat: 33.5731,
       lng: -7.6326
@@ -105,7 +105,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 1500,
     type: "hotel",
     location: "Ain Diab - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
     coordinates: {
       lat: 33.5989,
       lng: -7.6706
@@ -121,7 +121,7 @@ export const SAMPLE_PROPERTIES: Property[] = [
     size: 1800,
     type: "warehouse",
     location: "Nouaceur - Casablanca",
-    imageUrl: "/placeholder.svg",
+    imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
     coordinates: {
       lat: 33.3678,
       lng: -7.5892
