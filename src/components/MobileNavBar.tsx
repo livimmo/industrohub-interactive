@@ -1,4 +1,4 @@
-import { Home, Search, Bell, User, Building2 } from "lucide-react";
+import { Home, Search, User, Building2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -21,12 +21,6 @@ export const MobileNavBar = () => {
       icon: Search,
       label: "Rechercher",
       href: "/search",
-    },
-    {
-      icon: Bell,
-      label: "Notifications",
-      href: "/notifications",
-      requiresAuth: true,
     },
     {
       icon: User,

@@ -10,6 +10,7 @@ import Properties from "@/pages/Properties";
 import PropertyDetail from "@/pages/PropertyDetail";
 import Profile from "@/pages/Profile";
 import DeveloperSales from "@/pages/DeveloperSales";
+import Search from "@/pages/Search";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/properties/:id" element={<PropertyDetail />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/developer-sales" element={<DeveloperSales />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </main>
         <Footer className="hidden md:block" />

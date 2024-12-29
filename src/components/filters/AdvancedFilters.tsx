@@ -23,7 +23,7 @@ interface AdvancedFiltersProps {
 }
 
 export const AdvancedFilters = ({ filters, setFilters }: AdvancedFiltersProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSearch = () => {
     toast.success("Recherche lancée");

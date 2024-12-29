@@ -6,11 +6,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
-import { User, Settings, Bell, Shield, History, HelpCircle } from "lucide-react";
+import { toast } from "sonner";
+import { User, Settings, Bell, Shield, History } from "lucide-react";
 
 export default function Profile() {
-  const { toast } = useToast();
   const [userInfo, setUserInfo] = useState({
     firstName: "John",
     lastName: "Doe",
@@ -35,7 +34,6 @@ export default function Profile() {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      {/* Hero Section */}
       <Card className="mb-8">
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row items-center gap-6">
@@ -52,28 +50,27 @@ export default function Profile() {
         </CardContent>
       </Card>
 
-      {/* Tabs Section */}
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <TabsTrigger value="personal" className="flex gap-2">
-            <User className="h-4 w-4" />
-            <span className="hidden md:inline">Informations</span>
+        <TabsList className="w-full flex space-x-2 overflow-x-auto">
+          <TabsTrigger value="personal" className="flex-1">
+            <User className="h-4 w-4 mr-2" />
+            <span>Informations</span>
           </TabsTrigger>
-          <TabsTrigger value="settings" className="flex gap-2">
-            <Settings className="h-4 w-4" />
-            <span className="hidden md:inline">Paramètres</span>
+          <TabsTrigger value="settings" className="flex-1">
+            <Settings className="h-4 w-4 mr-2" />
+            <span>Paramètres</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex gap-2">
-            <Bell className="h-4 w-4" />
-            <span className="hidden md:inline">Notifications</span>
+          <TabsTrigger value="notifications" className="flex-1">
+            <Bell className="h-4 w-4 mr-2" />
+            <span>Notifications</span>
           </TabsTrigger>
-          <TabsTrigger value="security" className="flex gap-2">
-            <Shield className="h-4 w-4" />
-            <span className="hidden md:inline">Sécurité</span>
+          <TabsTrigger value="security" className="flex-1">
+            <Shield className="h-4 w-4 mr-2" />
+            <span>Sécurité</span>
           </TabsTrigger>
-          <TabsTrigger value="history" className="flex gap-2">
-            <History className="h-4 w-4" />
-            <span className="hidden md:inline">Historique</span>
+          <TabsTrigger value="history" className="flex-1">
+            <History className="h-4 w-4 mr-2" />
+            <span>Historique</span>
           </TabsTrigger>
         </TabsList>
 
@@ -186,7 +183,38 @@ export default function Profile() {
           </Card>
         </TabsContent>
 
-        {/* Les autres TabsContent seront ajoutés progressivement */}
+        <TabsContent value="settings">
+          <Card>
+            <CardHeader>
+              <CardTitle>Paramètres</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Contenu des paramètres à venir...</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="security">
+          <Card>
+            <CardHeader>
+              <CardTitle>Sécurité</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Contenu de sécurité à venir...</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="history">
+          <Card>
+            <CardHeader>
+              <CardTitle>Historique</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Historique à venir...</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
