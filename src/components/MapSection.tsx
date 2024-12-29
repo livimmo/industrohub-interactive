@@ -6,6 +6,12 @@ import { PropertyPopup } from "./map/PropertyPopup";
 import { Factory, Building2, Hotel, Hospital, LandPlot, Store, Warehouse } from "lucide-react";
 import { toast } from "sonner";
 import { AdvancedFilters } from "./filters/AdvancedFilters";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const mapContainerStyle = {
   width: "100%",
@@ -176,23 +182,31 @@ export const MapSection = () => {
             )}
           </GoogleMap>
 
-          <div className="absolute bottom-4 left-4 bg-white p-4 rounded-lg shadow-lg">
-            <h3 className="font-semibold mb-2">Types de Biens</h3>
-            <div className="space-y-2">
-              {Object.entries(typeLabels).map(([type, label]) => {
-                const Icon = typeIcons[type as keyof typeof typeIcons];
-                return (
-                  <div key={type} className="flex items-center gap-2">
-                    <div
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: typeColors[type as keyof typeof typeColors] }}
-                    />
-                    <Icon className="w-4 h-4" />
-                    <span className="text-sm">{label}</span>
+          <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg">
+            <Accordion type="single" collapsible defaultValue="legend" className="w-64">
+              <AccordionItem value="legend" className="border-none">
+                <AccordionTrigger className="px-4 py-2 hover:no-underline">
+                  Types de Biens
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="space-y-2">
+                    {Object.entries(typeLabels).map(([type, label]) => {
+                      const Icon = typeIcons[type as keyof typeof typeIcons];
+                      return (
+                        <div key={type} className="flex items-center gap-2">
+                          <div
+                            className="w-4 h-4 rounded-full"
+                            style={{ backgroundColor: typeColors[type as keyof typeof typeColors] }}
+                          />
+                          <Icon className="w-4 h-4" />
+                          <span className="text-sm">{label}</span>
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
 
