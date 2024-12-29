@@ -35,13 +35,19 @@ export const LocationFilter = ({ city, location, onCityChange, onLocationChange 
     ? NEIGHBORHOODS[city.toLowerCase()] || []
     : [];
 
+  const handleCityChange = (newCity: string) => {
+    onCityChange(newCity);
+    // Reset location when city changes
+    onLocationChange("all");
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-4">
         <Label>Ville</Label>
         <Select
           value={city}
-          onValueChange={onCityChange}
+          onValueChange={handleCityChange}
         >
           <SelectTrigger>
             <SelectValue placeholder="Sélectionner une ville" />
@@ -63,7 +69,7 @@ export const LocationFilter = ({ city, location, onCityChange, onLocationChange 
           disabled={!city || city === "all"}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Sélectionner un quartier" />
+            <SelectValue placeholder={!city || city === "all" ? "Sélectionnez d'abord une ville" : "Sélectionner un quartier"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Tous les quartiers</SelectItem>

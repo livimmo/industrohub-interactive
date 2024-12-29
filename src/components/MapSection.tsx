@@ -59,6 +59,7 @@ type Filters = {
   type: string;
   zoning: string;
   city: string;
+  location: string;
   listingType: "sale" | "rent" | "all";
 };
 
@@ -71,6 +72,7 @@ export const MapSection = () => {
     type: "all",
     zoning: "all",
     city: "",
+    location: "all",
     listingType: "all",
   });
 
@@ -89,13 +91,17 @@ export const MapSection = () => {
     
     const matchesZoning = filters.zoning === "all" || property.zoning === filters.zoning;
 
-    const matchesCity = !filters.city || 
+    const matchesCity = !filters.city || filters.city === "all" || 
       property.location.toLowerCase().includes(filters.city.toLowerCase());
+
+    const matchesLocation = !filters.location || filters.location === "all" || 
+      property.location.toLowerCase().includes(filters.location.toLowerCase());
 
     const matchesListingType = filters.listingType === "all" || 
       property.listingType === filters.listingType;
 
-    return matchesPrice && matchesSize && matchesType && matchesZoning && matchesCity && matchesListingType;
+    return matchesPrice && matchesSize && matchesType && matchesZoning && 
+           matchesCity && matchesLocation && matchesListingType;
   });
 
   const options = useMemo(() => ({
@@ -125,7 +131,7 @@ export const MapSection = () => {
           <AdvancedFilters 
             filters={{
               city: filters.city,
-              location: "",
+              location: filters.location,
               propertyType: filters.type,
               minPrice: filters.priceRange[0],
               maxPrice: filters.priceRange[1],
@@ -137,6 +143,7 @@ export const MapSection = () => {
               setFilters(prev => ({
                 ...prev,
                 city: newFilters.city,
+                location: newFilters.location,
                 type: newFilters.propertyType,
                 priceRange: [newFilters.minPrice, newFilters.maxPrice],
                 sizeRange: [newFilters.minSize, newFilters.maxSize],
