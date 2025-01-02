@@ -1,9 +1,7 @@
-import { Menu } from "lucide-react";
-import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Logo } from "./Logo";
-import { AuthDialog } from "./auth/AuthDialog";
+import { Button } from "./ui/button";
 import { UserMenu } from "./user-menu";
 import { NotificationBell } from "./notifications/NotificationBell";
 import { GlobalSearch } from "./GlobalSearch";
@@ -12,10 +10,7 @@ import { toast } from "sonner";
 
 export const Header = () => {
   const isMobile = useIsMobile();
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const storedRole = localStorage.getItem('userRole');
-  const userRole = (storedRole === 'owner' || storedRole === 'investor') ? storedRole : 'investor';
-  const userName = localStorage.getItem('userName') || "John Doe";
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const handleLogout = () => {
     localStorage.clear();
@@ -23,79 +18,56 @@ export const Header = () => {
     window.location.reload();
   };
 
-  const menuItems = [
-    { label: "Accueil", href: "/" },
-    { label: "Biens", href: "#properties" },
-    { label: "Programmes Neufs", href: "/developer-sales" },
-    { label: "À propos", href: "#about" },
-    { label: "Contact", href: "#contact" },
-  ];
-
-  const renderDesktopMenu = () => (
-    <nav className="hidden md:flex items-center gap-6">
-      <GlobalSearch />
-      {menuItems.map((item) => (
-        <a
-          key={item.label}
-          href={item.href}
-          className="text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          {item.label}
-        </a>
-      ))}
-      {isLoggedIn && <NotificationBell />}
-      {!isLoggedIn ? (
-        <AuthDialog />
-      ) : (
-        <SidebarProvider>
-          <UserMenu userRole={userRole} userName={userName} onLogout={handleLogout} />
-        </SidebarProvider>
-      )}
-    </nav>
-  );
-
-  const renderMobileMenu = () => (
-    <Sheet>
-      <SheetTrigger asChild className="md:hidden">
-        <Button variant="ghost" size="icon">
-          <Menu className="h-6 w-6" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
-        </SheetHeader>
-        <nav className="flex flex-col gap-4 mt-6">
-          <GlobalSearch />
-          {menuItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
-          {!isLoggedIn ? (
-            <AuthDialog />
-          ) : (
-            <SidebarProvider>
-              <UserMenu userRole={userRole} userName={userName} onLogout={handleLogout} />
-            </SidebarProvider>
-          )}
-        </nav>
-      </SheetContent>
-    </Sheet>
-  );
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container flex h-16 items-center justify-between">
-        <a href="/" className="flex items-center gap-2">
-          <Logo />
-        </a>
-        {renderDesktopMenu()}
-        {renderMobileMenu()}
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-2">
+            <Logo />
+          </Link>
+          {!isMobile && (
+            <nav className="flex items-center gap-6">
+              <Link
+                to="/properties"
+                className="text-sm font-medium text-gray-500 hover:text-gray-900"
+              >
+                Biens
+              </Link>
+              <Link
+                to="/developer-sales"
+                className="text-sm font-medium text-gray-500 hover:text-gray-900"
+              >
+                Ventes Promoteur
+              </Link>
+              <Link
+                to="/about"
+                className="text-sm font-medium text-gray-500 hover:text-gray-900"
+              >
+                À propos
+              </Link>
+              <Link
+                to="/contact"
+                className="text-sm font-medium text-gray-500 hover:text-gray-900"
+              >
+                Contact
+              </Link>
+            </nav>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4">
+          <GlobalSearch />
+          {isLoggedIn ? (
+            <>
+              <NotificationBell />
+              <UserMenu onLogout={handleLogout} />
+            </>
+          ) : (
+            <Link to="/profile">
+              <Button>Se connecter</Button>
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );

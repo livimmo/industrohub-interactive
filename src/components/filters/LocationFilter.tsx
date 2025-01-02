@@ -9,41 +9,40 @@ interface LocationFilterProps {
   onLocationChange: (location: string) => void;
 }
 
-const moroccanCities = [
-  "Casablanca",
-  "Rabat",
-  "Marrakech",
-  "Fès",
-  "Tanger",
-  "Agadir",
-  "Meknès",
-  "Oujda",
-  "Kénitra",
-  "Tétouan",
-  "El Jadida",
-  "Safi",
-  "Mohammedia",
-  "Khouribga",
-  "Béni Mellal",
-  "Nador",
-  "Taza",
-  "Settat"
-];
-
 export const LocationFilter = ({ city, location, onCityChange, onLocationChange }: LocationFilterProps) => {
+  const moroccanCities = [
+    "Casablanca",
+    "Rabat",
+    "Marrakech",
+    "Fès",
+    "Tanger",
+    "Agadir",
+    "Meknès",
+    "Oujda",
+    "Kénitra",
+    "Tétouan",
+    "El Jadida",
+    "Safi",
+    "Mohammedia",
+    "Khouribga",
+    "Béni Mellal",
+    "Nador",
+    "Taza",
+    "Settat"
+  ];
+
   const availableNeighborhoods = city && city !== "all" 
     ? NEIGHBORHOODS[city.toLowerCase()] || []
     : [];
 
   const handleCityChange = (newCity: string) => {
     onCityChange(newCity);
-    // Reset location when city changes
-    onLocationChange("all");
+    onLocationChange("all"); // Reset location when city changes
   };
 
   return (
     <div className="space-y-4">
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Ville</Label>
         <Select
           value={city}
@@ -61,7 +60,7 @@ export const LocationFilter = ({ city, location, onCityChange, onLocationChange 
         </Select>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Quartier</Label>
         <Select
           value={location}
