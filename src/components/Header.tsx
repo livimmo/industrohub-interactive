@@ -8,6 +8,7 @@ import { UserMenu } from "./user-menu";
 import { NotificationBell } from "./notifications/NotificationBell";
 import { GlobalSearch } from "./GlobalSearch";
 import { SidebarProvider } from "./ui/sidebar";
+import { toast } from "sonner";
 
 export const Header = () => {
   const isMobile = useIsMobile();

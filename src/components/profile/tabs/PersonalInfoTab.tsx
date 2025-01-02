@@ -16,10 +16,7 @@ export const PersonalInfoTab = () => {
   });
 
   const handleUpdateProfile = () => {
-    toast({
-      title: "Profil mis à jour",
-      description: "Vos informations ont été mises à jour avec succès.",
-    });
+    toast.success("Vos informations ont été mises à jour avec succès.");
   };
 
   return (
